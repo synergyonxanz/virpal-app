@@ -14,24 +14,28 @@ VirPal hadir sebagai solusi untuk mengatasi kebutuhan akan pendamping virtual ya
 ## Fitur Utama
 
 ### 1. Chat AI Interaktif
+
 - **AI Conversation**: Percakapan natural dengan Azure OpenAI Service
 - **Message History**: Penyimpanan riwayat percakapan dengan konteks
 - **Guest Mode**: Akses terbatas untuk pengguna tanpa login (5 pesan)
 - **Authenticated Mode**: Akses penuh untuk pengguna terautentikasi
 
 ### 2. Text-to-Speech (TTS)
+
 - **Azure Speech Service**: Menggunakan voice neural berkualitas tinggi (en-US-Brian:DragonHDLatestNeural)
 - **Fallback Support**: Web Speech API sebagai alternatif
 - **Audio Controls**: Kontrol putar/berhenti dengan indikator visual
 - **Browser Compatibility**: Dukungan AudioContext dengan unlock otomatis
 
 ### 3. Autentikasi dan Keamanan
+
 - **Microsoft Authentication Library (MSAL)**: Integrasi Azure Active Directory
 - **JWT Validation**: Validasi token pada backend Azure Functions
 - **Guest Access**: Mode guest dengan pembatasan penggunaan
 - **Secure Credential Management**: Azure Key Vault untuk menyimpan API keys
 
 ### 4. Keamanan Enterprise
+
 - **Azure Key Vault Integration**: Manajemen kredensial yang aman
 - **Managed Identity**: Tanpa hardcoded credentials
 - **Circuit Breaker Pattern**: Penanganan error yang resilient
@@ -42,6 +46,7 @@ VirPal hadir sebagai solusi untuk mengatasi kebutuhan akan pendamping virtual ya
 ## Arsitektur Teknologi
 
 ### Frontend
+
 - **React 18** - Library UI dengan hooks modern
 - **TypeScript** - Type safety dan developer experience
 - **Vite** - Build tool dan development server yang cepat
@@ -49,12 +54,14 @@ VirPal hadir sebagai solusi untuk mengatasi kebutuhan akan pendamping virtual ya
 - **MSAL React** - Autentikasi Microsoft
 
 ### Backend
+
 - **Azure Functions** - Serverless compute platform
 - **Node.js 20** - JavaScript runtime
 - **TypeScript** - Type safety pada backend
 - **JWT Validation** - Keamanan token-based
 
 ### Cloud Services
+
 - **Azure OpenAI Service** - Large Language Model untuk chat
 - **Azure Cognitive Services Speech** - Text-to-Speech neural voice
 - **Azure Key Vault** - Secure credential storage
@@ -63,6 +70,7 @@ VirPal hadir sebagai solusi untuk mengatasi kebutuhan akan pendamping virtual ya
 ## Instalasi dan Pengembangan
 
 ### Prasyarat
+
 - Node.js 20 atau lebih tinggi
 - Azure CLI untuk development dan deployment
 - Azure Functions Core Tools
@@ -71,6 +79,7 @@ VirPal hadir sebagai solusi untuk mengatasi kebutuhan akan pendamping virtual ya
 ### Langkah Instalasi
 
 1. **Clone dan Install Dependencies**
+
    ```bash
    git clone <repository-url>
    cd virpal-app
@@ -78,22 +87,25 @@ VirPal hadir sebagai solusi untuk mengatasi kebutuhan akan pendamping virtual ya
    ```
 
 2. **Konfigurasi Environment**
+
    ```bash
    cp .env.example .env
    cp local.settings.json.example local.settings.json
    ```
 
 3. **Autentikasi Azure**
+
    ```bash
    # Login ke Azure untuk akses Key Vault
    az login --tenant virpalapp.onmicrosoft.com
    ```
 
 4. **Menjalankan Services Development**
+
    ```bash
    # Terminal 1: Build dan start Azure Functions
    npm run build && npx func host start
-   
+
    # Terminal 2: Start frontend development server
    npm run dev
    ```
@@ -127,12 +139,14 @@ npm run clean:dist            # Bersihkan direktori build
 Aplikasi memerlukan secrets berikut di Azure Key Vault:
 
 ### Secrets yang Diperlukan
+
 - `azure-speech-service-key` - API key Azure Speech Service
 - `azure-speech-service-region` - Region Azure Speech Service
 - `azure-openai-api-key` - API key Azure OpenAI Service
 - `azure-openai-endpoint` - Endpoint Azure OpenAI Service
 
 ### Panduan Setup
+
 Lihat dokumentasi lengkap: [docs/KEY_VAULT_SETUP_GUIDE.md](./docs/KEY_VAULT_SETUP_GUIDE.md)
 
 ## Struktur Proyek
@@ -170,6 +184,7 @@ virpal-app/
 ## Pengujian dan Troubleshooting
 
 ### Testing TTS Integration
+
 Lihat panduan: [docs/TTS_TESTING_GUIDE.md](./docs/TTS_TESTING_GUIDE.md)
 
 ### Common Issues
@@ -179,6 +194,7 @@ Lihat panduan: [docs/TTS_TESTING_GUIDE.md](./docs/TTS_TESTING_GUIDE.md)
 **Audio Issues**: Pastikan browser mendukung Web Audio API dan audio tidak di-mute
 
 ### Monitoring dan Logging
+
 - **Application Insights**: Monitoring performa dan error tracking
 - **Azure Functions Logs**: Diagnostic logging untuk backend
 - **Browser Console**: Development debugging dan metrics
@@ -186,6 +202,7 @@ Lihat panduan: [docs/TTS_TESTING_GUIDE.md](./docs/TTS_TESTING_GUIDE.md)
 ## Deployment
 
 ### Development Deployment
+
 ```bash
 # Build semua komponen
 npm run build
@@ -195,11 +212,13 @@ func host start --verbose
 ```
 
 ### Production Deployment
+
 Lihat panduan lengkap: [docs/PRODUCTION_DEPLOYMENT_GUIDE.md](./docs/PRODUCTION_DEPLOYMENT_GUIDE.md)
 
 ## Kontribusi
 
 Proyek ini mengikuti best practices untuk:
+
 - **TypeScript**: Strict type checking dan konsistensi kode
 - **Security**: Tidak ada hardcoded credentials atau sensitive data
 - **Performance**: Lazy loading dan caching untuk optimasi
