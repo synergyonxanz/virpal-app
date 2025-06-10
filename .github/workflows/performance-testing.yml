@@ -1,0 +1,166 @@
+name: Performance Testing
+
+on:
+  schedule:
+    # Run performance tests weekly on Sundays at 3 AM UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to test'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      duration:
+        description: 'Test duration in minutes'
+        required: true
+        default: '5'
+        type: string
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  load-test:
+    name: Load Testing
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install Artillery
+      run: npm install -g artillery@latest
+    
+    - name: Create load test configuration
+      run: |
+        cat > load-test.yml << 'EOF'
+        config:
+          target: '${{ github.event.inputs.environment == 'production' && 'https://virpal-function-app.azurewebsites.net' || 'https://virpal-function-app-staging.azurewebsites.net' }}'
+          phases:
+            - duration: ${{ github.event.inputs.duration || '5' }}
+              arrivalRate: 5
+              name: "Warm up"
+            - duration: ${{ github.event.inputs.duration || '5' }}
+              arrivalRate: 10
+              rampTo: 20
+              name: "Ramp up load"
+            - duration: ${{ github.event.inputs.duration || '5' }}
+              arrivalRate: 20
+              name: "Sustained load"
+          processor: "./load-test-processor.js"
+        scenarios:
+          - name: "Health Check"
+            weight: 30
+            flow:
+              - get:
+                  url: "/api/health"
+                  expect:
+                    - statusCode: 200
+          - name: "Chat Completion"
+            weight: 70
+            flow:
+              - post:
+                  url: "/api/chat-completion"
+                  headers:
+                    Content-Type: "application/json"
+                  json:
+                    message: "Hello, this is a test message"
+                    userId: "test-user"
+                  expect:
+                    - statusCode: [200, 201]
+        EOF
+    
+    - name: Create load test processor
+      run: |
+        cat > load-test-processor.js << 'EOF'
+        module.exports = {
+          setCustomData: function(requestParams, context, ee, next) {
+            // Add custom headers or modify request
+            requestParams.headers = requestParams.headers || {};
+            requestParams.headers['User-Agent'] = 'Artillery-Load-Test';
+            return next();
+          }
+        };
+        EOF
+    
+    - name: Run load test
+      run: |
+        artillery run load-test.yml --output load-test-results.json
+    
+    - name: Generate HTML report
+      run: |
+        artillery report load-test-results.json --output load-test-report.html
+    
+    - name: Upload load test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: load-test-results-${{ github.event.inputs.environment || 'staging' }}
+        path: |
+          load-test-results.json
+          load-test-report.html
+    
+    - name: Check performance thresholds
+      run: |
+        # Extract metrics and check against thresholds
+        RESPONSE_TIME_P95=$(cat load-test-results.json | jq '.aggregate.latency.p95')
+        ERROR_RATE=$(cat load-test-results.json | jq '.aggregate.counters["errors.total"] // 0')
+        TOTAL_REQUESTS=$(cat load-test-results.json | jq '.aggregate.counters["http.requests"]')
+        
+        echo "📊 Performance Metrics:"
+        echo "  - 95th percentile response time: ${RESPONSE_TIME_P95}ms"
+        echo "  - Error rate: ${ERROR_RATE}/${TOTAL_REQUESTS}"
+        echo "  - Total requests: ${TOTAL_REQUESTS}"
+        
+        # Define thresholds
+        MAX_P95_RESPONSE_TIME=5000  # 5 seconds
+        MAX_ERROR_RATE=5  # 5 errors max
+        
+        if (( $(echo "$RESPONSE_TIME_P95 > $MAX_P95_RESPONSE_TIME" | bc -l) )); then
+          echo "❌ P95 response time exceeded threshold: ${RESPONSE_TIME_P95}ms > ${MAX_P95_RESPONSE_TIME}ms"
+          exit 1
+        fi
+        
+        if [ "$ERROR_RATE" -gt "$MAX_ERROR_RATE" ]; then
+          echo "❌ Error rate exceeded threshold: ${ERROR_RATE} > ${MAX_ERROR_RATE}"
+          exit 1
+        fi
+          echo "✅ All performance thresholds passed"
+  lighthouse-audit:
+    name: Frontend Performance Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build frontend
+      run: npm run build:frontend
+      env:
+        NODE_ENV: production
+    
+    - name: Run Lighthouse audit
+      uses: treosh/lighthouse-ci-action@v10
+      with:
+        urls: |
+          http://localhost:5173
+        configPath: './.lighthouserc.js'
+        uploadArtifacts: true
+        temporaryPublicStorage: true

@@ -1,0 +1,205 @@
+# ==================================================
+# VIRPAL-APP .GITIGNORE - PRODUCTION-READY
+# React + TypeScript + Azure Functions Stack
+# Optimized for security, performance, and deployment
+# ==================================================
+
+# ===== 🔐 SECURITY & SECRETS (PRIORITY 1) =====
+# Environment variables and secrets
+.env*
+!.env.example
+local.settings.json
+!local.settings.json.example
+
+# Certificates and keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.cer
+*.crt
+*.jks
+*.keystore
+id_rsa*
+.ssh/
+
+# Package manager configs (may contain auth tokens)
+.npmrc
+.yarnrc
+.yarn-integrity
+
+# ===== 📦 DEPENDENCIES =====
+node_modules/
+.pnp/
+.pnp.js
+.yarn/
+.pnpm-store/
+
+# ===== 🏗️ BUILD OUTPUTS =====
+dist/
+dist-ssr/
+dist-frontend/
+build/
+out/
+*.tsbuildinfo
+.vite/
+.turbo/
+.nx/cache/
+
+# ===== 📋 LOGS & DEBUG =====
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.eslintcache
+
+# ===== ☁️ AZURE FUNCTIONS & CLOUD =====
+# Azure deployment files
+.azure/
+.deployment
+.deployments/
+deploy.sh
+deploy.cmd
+*.publish.xml
+*.PublishSettings
+*.pubxml
+*.pubxml.user
+FuncAppLocalConfig.json
+
+# Azure Functions runtime
+bin/
+obj/
+.python_packages/
+func-extensions/
+
+# Azurite local emulator
+.azurite/
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
+azurite*/
+
+# Azure monitoring
+applicationinsights.json
+.applicationinsights/
+*.azure.log
+azure-pipelines.yml.bak
+
+# ===== 🗂️ CACHE & TEMPORARY =====
+.tmp/
+.cache/
+.swc/
+.parcel-cache/
+.next/
+.nuxt/
+.output/
+.vercel/
+
+# ===== 🧪 TESTING =====
+coverage/
+.coverage/
+.nyc_output/
+jest-report/
+.scannerwork/
+__tests__/__snapshots__/
+__mocks__/
+*.test.local
+*.spec.local
+
+# ===== 💻 IDE & EDITOR FILES =====
+# VS Code (keep configuration)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.json
+!.vscode/*.jsonc
+!.vscode/*.md
+!.vscode/*.ps1
+
+# Other IDEs
+.idea/
+*.iml
+.vs/
+*.sublime-*
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# ===== 🖥️ OS GENERATED FILES =====
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+
+# ===== 📦 PACKAGE MANAGERS =====
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ===== 🐳 CONTAINERIZATION =====
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+.docker/
+
+# ===== 🏗️ INFRASTRUCTURE AS CODE =====
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# ===== ⚡ PERFORMANCE & PROFILING =====
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot
+
+# ===== 🔧 BUILD ARTIFACTS =====
+*.min.js
+*.min.css
+*.bundle.js
+*.chunk.js
+
+# Runtime processes
+*.pid
+*.seed
+*.pid.lock
+
+# ===== 🎯 VIRPAL-APP SPECIFIC =====
+# Temporary documentation files
+AZURE_FUNCTIONS_SETUP_COMPLETE.md
+*-BACKUP.*
+*-OLD.*
+
+# Development artifacts
+.grunt/
+lib-cov/
+.node_repl_history
+*.tgz
+.npm/
+.bower-cache/
+.bower-tmp/
+
+# ===== 📄 END OF OPTIMIZED GITIGNORE =====
+# Last updated: June 2025
+# For any issues, refer to: docs/IGNORE_FILES_DOCUMENTATION.md

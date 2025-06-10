@@ -1,0 +1,39 @@
+# Example Local Settings for Azure Functions
+# Copy this file to local.settings.json and fill in your values
+# NEVER commit local.settings.json to version control
+
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "FUNCTIONS_EXTENSION_VERSION": "~4",
+
+    "AZURE_CLIENT_ID": "your-azure-client-id",
+    "AZURE_CLIENT_SECRET": "your-azure-client-secret",
+    "AZURE_TENANT_ID": "your-azure-tenant-id",
+
+    "COSMOS_DB_ENDPOINT": "your-cosmos-db-endpoint",
+    "COSMOS_DB_KEY": "your-cosmos-db-key",
+    "COSMOS_DB_DATABASE": "virpal-db",
+    "COSMOS_DB_CONTAINER": "conversations",
+
+    "OPENAI_API_KEY": "your-openai-api-key",
+    "OPENAI_ENDPOINT": "your-azure-openai-endpoint",
+    "OPENAI_API_VERSION": "2024-02-01",
+
+    "SPEECH_KEY": "your-azure-speech-key",
+    "SPEECH_REGION": "your-azure-speech-region",
+
+    "KEY_VAULT_URL": "https://your-keyvault.vault.azure.net/",
+
+    "JWT_SECRET": "your-jwt-secret-for-development",
+    "JWT_ISSUER": "virpal-app",
+    "JWT_AUDIENCE": "virpal-users"
+  },
+  "Host": {
+    "CORS": "*",
+    "CORSCredentials": false
+  },
+  "ConnectionStrings": {}
+}

@@ -1,0 +1,145 @@
+[
+  // Development Workflow
+  {
+    "key": "ctrl+shift+d",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Full Stack: Start Development"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Frontend: Dev Server"
+  },
+  {
+    "key": "ctrl+shift+a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "func: host start"
+  },
+  {
+    "key": "ctrl+shift+b",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Build: Full Application"
+  },
+
+  // Code Quality
+  {
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Lint: Check All"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Clean: All Dist Folders"
+  },
+
+  // Quick Navigation
+  {
+    "key": "ctrl+shift+e",
+    "command": "workbench.view.explorer"
+  },
+  {
+    "key": "ctrl+shift+g",
+    "command": "workbench.view.scm"
+  },
+  {
+    "key": "ctrl+shift+x",
+    "command": "workbench.view.extensions"
+  },
+
+  // Terminal Management
+  {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+  {
+    "key": "ctrl+shift+t",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+
+  // File Operations
+  {
+    "key": "ctrl+shift+n",
+    "command": "explorer.newFile"
+  },
+  {
+    "key": "ctrl+shift+m",
+    "command": "explorer.newFolder"
+  },
+
+  // Debug Controls
+  {
+    "key": "f5",
+    "command": "workbench.action.debug.start"
+  },
+  {
+    "key": "shift+f5",
+    "command": "workbench.action.debug.stop"
+  },
+  {
+    "key": "ctrl+shift+f5",
+    "command": "workbench.action.debug.restart"
+  },
+
+  // Code Formatting
+  {
+    "key": "ctrl+shift+i",
+    "command": "editor.action.formatDocument"
+  },
+  {
+    "key": "ctrl+k ctrl+f",
+    "command": "editor.action.formatSelection"
+  },
+
+  // Search and Replace
+  {
+    "key": "ctrl+shift+h",
+    "command": "workbench.action.replaceInFiles"
+  },
+  {
+    "key": "ctrl+shift+j",
+    "command": "workbench.action.search.toggleQueryDetails"
+  },
+
+  // Code Actions
+  {
+    "key": "ctrl+.",
+    "command": "editor.action.quickFix"
+  },
+  {
+    "key": "f2",
+    "command": "editor.action.rename"
+  },
+  {
+    "key": "f12",
+    "command": "editor.action.revealDefinition"
+  },
+  {
+    "key": "shift+f12",
+    "command": "editor.action.goToReferences"
+  },
+
+  // Azure Functions Specific
+  {
+    "key": "ctrl+alt+f",
+    "command": "azureFunctions.createFunction"
+  },
+  {
+    "key": "ctrl+alt+d",
+    "command": "azureFunctions.deploy"
+  },
+
+  // Git Operations
+  {
+    "key": "ctrl+shift+g ctrl+c",
+    "command": "git.commit"
+  },
+  {
+    "key": "ctrl+shift+g ctrl+p",
+    "command": "git.push"
+  },
+  {
+    "key": "ctrl+shift+g ctrl+u",
+    "command": "git.pull"
+  }
+]

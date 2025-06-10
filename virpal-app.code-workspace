@@ -1,0 +1,115 @@
+{
+  "folders": [
+    {
+      "name": "virpal-app",
+      "path": "."
+    }
+  ],
+  "settings": {
+    // Project-specific settings
+    "files.associations": {
+      "*.ts": "typescript",
+      "*.tsx": "typescriptreact",
+      "host.json": "json",
+      "local.settings.json": "json",
+      "*.md": "markdown"
+    },
+    
+    // Azure Functions specific
+    "azureFunctions.showProjectWarning": false,
+    "azureFunctions.templateFilter": "All",
+    "azureFunctions.projectSubpath": ".",
+    
+    // Search configuration for this project
+    "search.useGlobalIgnoreFiles": true,
+    "search.useParentIgnoreFiles": true,
+    "search.followSymlinks": false,
+    
+    // Project-specific formatting
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false,
+    
+    // Debugging
+    "debug.allowBreakpointsEverywhere": true,
+    "debug.inlineValues": "auto",
+    "debug.showBreakpointsInOverviewRuler": true,
+    
+    // Project-specific exclusions
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/dist-frontend": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/.git": true,
+      "**/.hg": true,
+      "**/.svn": true,
+      "**/CVS": true,
+      "**/.env.local": true,
+      "**/.env.*.local": true
+    }
+  },
+  
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🚀 Quick Start Development",
+        "type": "shell",
+        "command": "echo",
+        "args": ["Starting virpal-app development environment..."],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "dependsOn": [
+          "Mode: Check Status",
+          "Full Stack: Start Development"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "new"
+        }
+      }
+    ]
+  },
+  
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🎯 Quick Debug (Recommended)",
+        "type": "node",
+        "request": "attach",
+        "restart": true,
+        "port": 9229,
+        "preLaunchTask": "🚀 Quick Start Development",
+        "skipFiles": ["<node_internals>/**"],
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+        "presentation": {
+          "hidden": false,
+          "group": "Quick Start",
+          "order": 1
+        }
+      }
+    ]
+  },
+  
+  "extensions": {
+    "recommendations": [
+      "ms-azuretools.vscode-azurefunctions",
+      "ms-azuretools.vscode-azureresourcegroups",
+      "ms-vscode.vscode-typescript-next",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "dsznajder.es7-react-js-snippets",
+      "bradlc.vscode-tailwindcss",
+      "eamodio.gitlens",
+      "usernamehw.errorlens",
+      "ms-vscode.powershell"
+    ]
+  }
+}

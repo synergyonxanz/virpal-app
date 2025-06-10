@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+/* Definisikan CSS Custom Properties (Variables) untuk Palet Warna VIRPAL */
+/* Ini ditempatkan di :root agar global */
+:root {
+  /* Palet Warna VIRPAL */
+  --virpal-primary: #7950f2;   /* Indigo/Violet Lembut */
+  --virpal-secondary: #06b6d4; /* Teal - menenangkan dan profesional */
+  --virpal-accent: #f7f3ff;   /* Lavender/Lilac Sangat Muda */
+
+  /* States untuk Primary Color */
+  --virpal-primary-hover: #6d44ea;    /* Primary lebih gelap untuk hover */
+  --virpal-primary-active: #5b38d6;   /* Primary paling gelap untuk active */
+
+  /* States untuk Secondary Color */
+  --virpal-secondary-hover: #0891b2;  /* Secondary lebih gelap untuk hover */
+  --virpal-secondary-active: #0e7490; /* Secondary paling gelap untuk active */
+
+  /* States untuk Accent/Light backgrounds */
+  --virpal-accent-hover: #ede9fe;     /* Accent sedikit lebih gelap untuk hover */
+  --virpal-accent-active: #ddd6fe;    /* Accent lebih gelap untuk active */
+
+  /* Sidebar specific colors */
+  --virpal-sidebar-bg: #ffffff;       /* Sidebar background (white) */
+  --virpal-sidebar-hover: #f1f5f9;    /* Light gray untuk hover sidebar items */
+  --virpal-sidebar-text: #334155;     /* Text color untuk sidebar (virpal-neutral-default) */
+
+  --virpal-neutral-lightest: #f8fafc; /* Off-White/Light Gray (Main Background) */
+  --virpal-neutral-lighter: #e2e8f0; /* Light Gray (Secondary Background) */
+  --virpal-neutral-default: #334155; /* Dark Grayish Blue (Main Text) */
+  --virpal-neutral-dark: #64748b;    /* Medium Grayish Blue (Secondary Text) */
+
+  /* Main content area backgrounds */
+  --virpal-main-bg: #f8fafc;         /* Main background */
+  --virpal-content-bg: #ffffff;      /* Content background (cards, inputs, etc) */
+  --virpal-header-bg: #f8fafc;       /* Header background */
+
+  /* Status and alert colors */
+  --virpal-danger: #dc2626;          /* Red for delete/danger actions */
+  --virpal-danger-hover: #b91c1c;    /* Darker red for hover */
+  --virpal-success: #16a34a;         /* Green for success states */
+  --virpal-warning: #d97706;         /* Orange for warnings */
+
+  /* (Opsional) Anda juga bisa mendefinisikan font di sini jika mau */
+  --font-sans: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Dark mode variables */
+[data-theme="dark"] {
+  /* Palet Warna VIRPAL - Dark Mode */
+  --virpal-primary: #8b5cf6;   /* Violet sedikit lebih terang untuk dark mode */
+  --virpal-secondary: #22d3ee; /* Cyan lebih terang untuk dark mode */
+  --virpal-accent: #1e1b4b;    /* Dark purple untuk accent di dark mode */
+
+  /* States untuk Primary Color - Dark Mode */
+  --virpal-primary-hover: #a78bfa;    /* Primary lebih terang untuk hover */
+  --virpal-primary-active: #c4b5fd;   /* Primary paling terang untuk active */
+
+  /* States untuk Secondary Color - Dark Mode */
+  --virpal-secondary-hover: #67e8f9;  /* Secondary lebih terang untuk hover */
+  --virpal-secondary-active: #a5f3fc; /* Secondary paling terang untuk active */
+
+  /* States untuk Accent/Dark backgrounds */
+  --virpal-accent-hover: #312e81;     /* Accent sedikit lebih terang untuk hover */
+  --virpal-accent-active: #3730a3;    /* Accent lebih terang untuk active */
+
+  /* Sidebar specific colors - Dark Mode */
+  --virpal-sidebar-bg: #1e293b;       /* Dark sidebar background */
+  --virpal-sidebar-hover: #334155;    /* Darker gray untuk hover sidebar items */
+  --virpal-sidebar-text: #f1f5f9;     /* Light text color untuk sidebar */
+
+  /* Neutral colors - Dark Mode (dibalik) */
+  --virpal-neutral-lightest: #0f172a; /* Dark background */
+  --virpal-neutral-lighter: #131d33;  /* Dark secondary background */
+  --virpal-neutral-default: #f1f5f9;  /* Light text */
+  --virpal-neutral-dark: #cbd5e1;     /* Light secondary text */
+
+  /* Main content area backgrounds - Dark Mode */
+  --virpal-main-bg: #0f172a;          /* Dark main background */
+  --virpal-content-bg: #1e293b;       /* Dark content background (cards, inputs, etc) */
+  --virpal-header-bg: #0f172a;        /* Dark header background */
+
+  /* Status and alert colors - Dark Mode */
+  --virpal-danger: #ef4444;           /* Lighter red for dark mode */
+  --virpal-danger-hover: #f87171;     /* Even lighter red for hover */
+  --virpal-success: #22c55e;          /* Lighter green for dark mode */
+  --virpal-warning: #f59e0b;          /* Lighter orange for dark mode */
+}
+
+html {
+  overflow: hidden; /* Mencegah overflow pada halaman */
+}
+
+/* Gaya Dasar dan Global (menggunakan CSS Variables) */
+body {
+  font-family: var(--font-sans); /* Menggunakan variabel font */
+  background-color: var(--virpal-neutral-lightest); /* Latar belakang utama */
+  color: var(--virpal-neutral-default); /* Warna teks utama */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Global theme transition for all elements - excluding elements that have transform animations */
+*:not([class*="translate"]):not([class*="transition-transform"]):not([style*="transform"]):not(.sidebar-element):not(.history-panel):not(.main-content) {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Specific classes for slide animations - exclude from global transitions */
+.sidebar-element {
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.history-panel {
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.main-content {
+  transition: margin 0.3s ease-in-out, background-color 0.3s ease !important;
+}
+
+/* Specific theme transition classes */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.theme-transition-fast {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.theme-transition-slow {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease !important;
+}
+
+/* Gaya untuk tautan */
+a {
+  color: var(--virpal-primary);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+/* Animation for dropup menu */
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation for submenu sliding from left */
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Animation for dropup menu sliding out to bottom */
+@keyframes slideOutToBottom {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+/* Animation for submenu sliding out to left */
+@keyframes slideOutToLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-10px) scale(0.95);
+  }
+}
+
+/* Animation for theme options appearing */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Toast animations */
+@keyframes toast-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.95);
+  }
+}
+
+/* Toast animation classes */
+.animate-toast-enter {
+  animation: toast-enter 0.3s ease-out forwards;
+}
+
+.animate-toast-exit {
+  animation: toast-exit 0.3s ease-in forwards;
+}
+
+/* Additional hover animations for smooth transitions */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* (Opsional) Gaya scrollbar (hanya untuk browser Webkit) */
+/* Kita bisa menggunakan warna default Tailwind atau variabel kita */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--virpal-neutral-lighter); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-100 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--virpal-neutral-dark); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-400 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--virpal-neutral-default); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-500 */
+}
+/* Kelas utilitas untuk menggunakan warna VIRPAL */
+/* Contoh penggunaan:
+.bg-virpal-primary { background-color: var(--virpal-primary); }
+.text-virpal-primary { color: var(--virpal-primary); }
+*/

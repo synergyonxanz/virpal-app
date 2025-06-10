@@ -1,0 +1,35 @@
+{
+  "recommendations": [
+    "ms-azuretools.vscode-azurefunctions",
+    "ms-azuretools.vscode-azureresourcegroups",
+    "ms-azuretools.vscode-azureappservice",
+    "ms-azuretools.vscode-azurestorage",
+    "ms-azuretools.vscode-cosmosdb",
+    "ms-vscode.vscode-typescript-next",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "dsznajder.es7-react-js-snippets",
+    "bradlc.vscode-tailwindcss",
+    "eamodio.gitlens",
+    "usernamehw.errorlens",
+    "ms-vscode.powershell",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-json",
+    "aaron-bond.better-comments",
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "alefragnani.bookmarks",
+    "pkief.material-icon-theme",
+    "github.vscode-pull-request-github",
+    "ms-vscode-remote.remote-containers",
+    "hbenl.vscode-test-explorer"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript",
+    "hookyqr.beautify",
+    "ms-vscode.vscode-css",
+    "formulahendry.code-runner"
+  ]
+}

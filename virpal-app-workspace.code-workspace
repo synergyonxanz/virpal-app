@@ -1,0 +1,155 @@
+{
+  "folders": [
+    {
+      "name": "🚀 Virpal App",
+      "path": "."
+    }
+  ],
+  "settings": {
+    // Workspace-specific overrides
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Default Dark+",
+
+    // Project-specific file associations
+    "files.associations": {
+      "*.ts": "typescript",
+      "*.tsx": "typescriptreact",
+      "host.json": "json",
+      "local.settings.json": "json",
+      "*.md": "markdown",
+      "dev-mode.js": "javascript"
+    },
+
+    // Azure Functions workspace settings
+    "azureFunctions.showProjectWarning": false,
+    "azureFunctions.templateFilter": "All",
+    "azureFunctions.projectSubpath": ".",
+    "azureFunctions.scmDoBuildDuringDeployment": true,
+
+    // Git settings for this workspace
+    "git.ignoreLimitWarning": true,
+    "git.detectSubmodules": false,
+
+    // Workspace-specific exclusions
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/dist-frontend": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/.git": true,
+      "**/.env.local": true,
+      "**/.env.*.local": true,
+      "**/.vscode/chrome-debug-user-data": true,
+      "**/.vscode/edge-debug-user-data": true
+    },
+
+    // Search configuration
+    "search.useIgnoreFiles": true,
+    "search.useGlobalIgnoreFiles": true,
+    "search.useParentIgnoreFiles": true,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/dist-frontend": true,
+      "**/*.map": true,
+      "**/.git": true
+    },
+
+    // TypeScript workspace settings
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "typescript.suggest.includeAutomaticOptionalChainCompletions": true,
+    "typescript.suggest.includeCompletionsForImportStatements": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+
+    // Debugging settings
+    "debug.openDebug": "openOnDebugBreak",
+    "debug.showInStatusBar": "always",
+    "debug.allowBreakpointsEverywhere": true,
+
+    // Terminal settings for this workspace
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.env.windows": {
+      "VIRPAL_ENV": "development"
+    }
+  },
+
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🎯 Quick Setup",
+        "type": "shell",
+        "command": "Write-Host",
+        "args": [
+          "'Setting up virpal-app development environment...' -ForegroundColor Green"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "dependsOn": ["npm install (functions)", "Mode: Check Status"],
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "new",
+          "showReuseMessage": false
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🎯 Start Here - Quick Debug",
+        "type": "node",
+        "request": "attach",
+        "restart": true,
+        "port": 9229,
+        "preLaunchTask": "🎯 Quick Setup",
+        "skipFiles": ["<node_internals>/**"],
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+        "presentation": {
+          "hidden": false,
+          "group": "⭐ Recommended",
+          "order": 1
+        },
+        "internalConsoleOptions": "neverOpen"
+      }
+    ]
+  },
+
+  "extensions": {
+    "recommendations": [
+      // Essential Azure & TypeScript
+      "ms-azuretools.vscode-azurefunctions",
+      "ms-azuretools.vscode-azureresourcegroups",
+      "ms-vscode.vscode-typescript-next",
+
+      // Code Quality
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "usernamehw.errorlens",
+
+      // React Development
+      "dsznajder.es7-react-js-snippets",
+      "bradlc.vscode-tailwindcss",
+
+      // Productivity
+      "eamodio.gitlens",
+      "ms-vscode.powershell",
+      "christian-kohler.path-intellisense",
+
+      // UI & Icons
+      "pkief.material-icon-theme"
+    ],
+    "unwantedRecommendations": [
+      "ms-vscode.vscode-typescript",
+      "hookyqr.beautify"
+    ]
+  }
+}

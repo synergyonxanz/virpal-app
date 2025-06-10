@@ -1,0 +1,8 @@
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run type-check",
+      "pre-push": "npm run security:audit"
+    }
+  }
+}

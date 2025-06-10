@@ -1,0 +1,51 @@
+{
+  "recommendations": [
+    // Azure Development
+    "ms-azuretools.vscode-azurefunctions",
+    "ms-azuretools.vscode-azureresourcegroups",
+    "ms-azuretools.vscode-azureappservice",
+    "ms-azuretools.vscode-azurestorage",
+    "ms-azuretools.vscode-cosmosdb",
+
+    // TypeScript & JavaScript
+    "ms-vscode.vscode-typescript-next",
+    "usernamehw.errorlens",
+
+    // React Development
+    "dsznajder.es7-react-js-snippets",
+    "bradlc.vscode-tailwindcss",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+
+    // Code Quality & Formatting
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "ms-vscode.vscode-json",
+
+    // Git & Version Control
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+
+    // Development Tools
+    "ms-vscode.powershell",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-json",
+    "ms-vscode-remote.remote-containers",
+
+    // Testing & Debugging
+    "ms-vscode.test-adapter-converter",
+    "hbenl.vscode-test-explorer",
+
+    // Productivity
+    "aaron-bond.better-comments",
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "alefragnani.bookmarks",
+    "ms-vscode.vscode-speech",
+
+    // Theme & UI
+    "pkief.material-icon-theme",
+    "ms-vscode.theme-tomorrowkit"
+  ],
+  "unwantedRecommendations": ["ms-vscode.vscode-typescript", "hookyqr.beautify"]
+}
