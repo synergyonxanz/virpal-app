@@ -1,10 +1,10 @@
 # Panduan Kontribusi - VirPal App
 
-Terima kasih atas minat Anda untuk berkontribusi pada VirPal App! 🎉
+Terima kasih atas minat Anda untuk berkontribusi pada VirPal App!
 
-## 🚀 Cara Berkontribusi
+## Cara Berkontribusi
 
-### 1. Fork dan Clone
+### 1. Fork dan Clone Repository
 
 ```bash
 # Fork repository di GitHub
@@ -12,10 +12,10 @@ git clone https://github.com/YOUR_USERNAME/virpal-app.git
 cd virpal-app
 ```
 
-### 2. Setup Development Environment
+### 2. Setup Environment Pengembangan
 
 ```bash
-# Install dependencies
+# Instalasi dependencies
 npm install
 
 # Setup environment
@@ -25,96 +25,98 @@ cp local.settings.json.example local.settings.json
 # Konfigurasi Azure credentials (lihat docs/KEY_VAULT_SETUP_GUIDE.md)
 ```
 
-### 3. Buat Branch Baru
+### 3. Membuat Branch Baru
 
 ```bash
 git checkout -b feature/nama-fitur-anda
 ```
 
-### 4. Development Guidelines
+### 4. Panduan Pengembangan
 
-#### Code Style
+#### Gaya Penulisan Kode
 
-- Gunakan TypeScript untuk type safety
-- Follow ESLint configuration yang sudah ada
+- Gunakan TypeScript untuk keamanan tipe
+- Ikuti konfigurasi ESLint yang telah ada
 - Gunakan Prettier untuk formatting
-- Tulis kode yang self-documenting
+- Tulis kode yang mudah dipahami dan self-documenting
 
-#### Commit Messages
+#### Pesan Commit
 
-Gunakan conventional commits:
+Gunakan format conventional commits:
 
 ```
-feat: menambahkan fitur chat history
+feat: menambahkan fitur riwayat chat
 fix: memperbaiki bug TTS di Safari
-docs: update panduan instalasi
+docs: memperbarui panduan instalasi
+refactor: memperbaiki struktur komponen
 ```
 
-#### Testing
+#### Pengujian
 
-- Test fitur baru secara manual
-- Pastikan tidak ada TypeScript errors
-- Test di multiple browsers
+- Uji fitur baru secara menyeluruh
+- Pastikan tidak ada error TypeScript
+- Test kompatibilitas di berbagai browser
+- Verifikasi fungsionalitas pada mode guest dan terautentikasi
 
-### 5. Pull Request Process
+### 5. Proses Pull Request
 
-1. **Update dokumentasi** jika diperlukan
-2. **Test thoroughly** di development environment
-3. **Create Pull Request** dengan deskripsi yang jelas:
-   - Apa yang diubah
-   - Mengapa perubahan diperlukan
-   - Bagaimana cara testing
+1. **Perbarui dokumentasi** jika diperlukan
+2. **Uji secara menyeluruh** di environment pengembangan
+3. **Buat Pull Request** dengan deskripsi yang jelas:
+   - Perubahan yang dilakukan
+   - Alasan perubahan diperlukan
+   - Cara pengujian yang dilakukan
 
-## 🐛 Melaporkan Bug
+## Melaporkan Bug
 
-Gunakan GitHub Issues dengan template:
+Gunakan GitHub Issues dengan format berikut:
 
 ```
 **Deskripsi Bug**
-Penjelasan singkat tentang bug
+Penjelasan singkat tentang masalah yang ditemukan
 
 **Langkah Reproduksi**
 1. Buka aplikasi
-2. Klik tombol X
-3. Lihat error Y
+2. Lakukan tindakan X
+3. Amati hasil Y
 
-**Expected Behavior**
+**Perilaku yang Diharapkan**
 Apa yang seharusnya terjadi
 
 **Environment**
-- Browser: Chrome 120
-- OS: Windows 11
-- Mode: Guest/Authenticated
+- Browser: Chrome 137
+- Sistem Operasi: Windows 11
+- Mode: Guest/Terautentikasi
 ```
 
-## 💡 Saran Fitur
+## Usulan Fitur Baru
 
 Sebelum mengembangkan fitur baru:
 
-1. Buat GitHub Issue untuk diskusi
-2. Tunggu feedback dari maintainer
-3. Mulai development setelah approved
+1. Buat GitHub Issue untuk diskusi terlebih dahulu
+2. Tunggu tanggapan dari maintainer
+3. Mulai pengembangan setelah mendapat persetujuan
 
-## 📋 Priority Areas
+## Area Prioritas Kontribusi
 
 Kontribusi yang sangat dibutuhkan:
 
-- 🌐 Internasionalisasi (i18n)
-- 🎨 UI/UX improvements
-- 📱 Mobile responsiveness
-- 🧪 Unit testing
-- 📖 Dokumentasi bahasa Inggris
-- 🔒 Security enhancements
+- **Internasionalisasi**: Dukungan multi-bahasa (i18n)
+- **Antarmuka Pengguna**: Peningkatan UI/UX
+- **Responsivitas Mobile**: Optimasi untuk perangkat mobile
+- **Pengujian Unit**: Implementasi unit testing
+- **Dokumentasi**: Terjemahan dokumentasi ke bahasa Inggris
+- **Keamanan**: Peningkatan fitur keamanan
 
-## 🤝 Code of Conduct
+## Kode Etik
 
 - Gunakan bahasa yang sopan dan profesional
-- Respect terhadap semua kontributor
-- Focus pada improvement, bukan kritik personal
-- Help others learn dan grow
+- Hormati semua kontributor
+- Fokus pada perbaikan, bukan kritik personal
+- Bantu orang lain untuk belajar dan berkembang
 
-## 📞 Kontak
+## Kontak
 
-Jika ada pertanyaan, buat GitHub Issue atau diskusi di GitHub Discussions.
+Jika ada pertanyaan, silakan buat GitHub Issue atau gunakan GitHub Discussions.
 
-Terima kasih telah berkontribusi! 🙏
+Terima kasih telah berkontribusi!
