@@ -1,3 +1,22 @@
+/**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
 import React from 'react';
 import type { CalendarDay } from '../types';
 import { formatDateToString } from '../utils/dateUtils';
@@ -11,7 +30,7 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({
   selectedDate,
   onDateSelect,
-  datesWithHistory
+  datesWithHistory,
 }) => {
   const today = new Date();
   const currentMonth = selectedDate.getMonth();
@@ -25,17 +44,21 @@ const Calendar: React.FC<CalendarProps> = ({
 
   // Generate calendar days
   const calendarDays: CalendarDay[] = [];
-  
+
   // Padding days dari bulan sebelumnya
   for (let i = 0; i < startingDayOfWeek; i++) {
-    const date = new Date(currentYear, currentMonth, -startingDayOfWeek + i + 1);
+    const date = new Date(
+      currentYear,
+      currentMonth,
+      -startingDayOfWeek + i + 1
+    );
     calendarDays.push({
       date,
       hasHistory: false,
       isSelected: false,
-      isToday: false
+      isToday: false,
     });
-  }  // Hari-hari dalam bulan ini
+  } // Hari-hari dalam bulan ini
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(currentYear, currentMonth, day);
     const dateString = formatDateToString(date);
@@ -47,11 +70,22 @@ const Calendar: React.FC<CalendarProps> = ({
       date,
       hasHistory,
       isSelected,
-      isToday
+      isToday,
     });
-  }  const monthNames = [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  }
+  const monthNames = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
   ];
 
   const getMonthName = (monthIndex: number): string => {
@@ -61,99 +95,132 @@ const Calendar: React.FC<CalendarProps> = ({
   const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
 
   const goToPreviousMonth = () => {
-    onDateSelect(new Date(currentYear, currentMonth - 1, selectedDate.getDate()));
+    onDateSelect(
+      new Date(currentYear, currentMonth - 1, selectedDate.getDate())
+    );
   };
 
   const goToNextMonth = () => {
-    onDateSelect(new Date(currentYear, currentMonth + 1, selectedDate.getDate()));
-  };  return (
-    <div className="rounded-lg p-4 shadow-sm border theme-transition" style={{ backgroundColor: 'var(--virpal-content-bg)' }}>
+    onDateSelect(
+      new Date(currentYear, currentMonth + 1, selectedDate.getDate())
+    );
+  };
+  return (
+    <div
+      className="rounded-lg p-4 shadow-sm border theme-transition"
+      style={{ backgroundColor: 'var(--virpal-content-bg)' }}
+    >
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 theme-transition">        <button
+      <div className="flex items-center justify-between mb-4 theme-transition">
+        {' '}
+        <button
           onClick={goToPreviousMonth}
           className="p-1 rounded transition-colors theme-transition"
-          style={{ 
+          style={{
             color: 'var(--virpal-primary)',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-accent-hover)';
             e.currentTarget.style.cursor = 'pointer';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = 'transparent';
           }}
           onMouseDown={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-accent-active)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-accent-active)';
           }}
           onMouseUp={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-accent-hover)';
           }}
         >
           ←
-        </button>        <h3 className="font-semibold text-lg theme-transition" style={{ color: 'var(--virpal-neutral-default)' }}>
+        </button>{' '}
+        <h3
+          className="font-semibold text-lg theme-transition"
+          style={{ color: 'var(--virpal-neutral-default)' }}
+        >
           {getMonthName(currentMonth)} {currentYear}
-        </h3><button
+        </h3>
+        <button
           onClick={goToNextMonth}
           className="p-1 rounded transition-colors theme-transition"
-          style={{ 
+          style={{
             color: 'var(--virpal-primary)',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-accent-hover)';
             e.currentTarget.style.cursor = 'pointer';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = 'transparent';
           }}
           onMouseDown={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-accent-active)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-accent-active)';
           }}
           onMouseUp={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-accent-hover)';
           }}
         >
           →
         </button>
       </div>
-
-      {/* Day headers */}      <div className="grid grid-cols-7 gap-1 mb-2 theme-transition">
-        {dayNames.map(day => (
-          <div key={day} className="text-center text-xs font-medium py-1 theme-transition" style={{ color: 'var(--virpal-neutral-dark)' }}>
+      {/* Day headers */}{' '}
+      <div className="grid grid-cols-7 gap-1 mb-2 theme-transition">
+        {dayNames.map((day) => (
+          <div
+            key={day}
+            className="text-center text-xs font-medium py-1 theme-transition"
+            style={{ color: 'var(--virpal-neutral-dark)' }}
+          >
             {day}
           </div>
         ))}
       </div>
-
       {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-1 theme-transition">
         {calendarDays.map((calendarDay, index) => {
           const isCurrentMonth = calendarDay.date.getMonth() === currentMonth;
-          
-          return (            <button
+
+          return (
+            <button
               key={index}
               onClick={() => isCurrentMonth && onDateSelect(calendarDay.date)}
-              disabled={!isCurrentMonth}              className={`
+              disabled={!isCurrentMonth}
+              className={`
                 relative h-8 w-8 text-xs rounded flex items-center justify-center transition-colors duration-200 theme-transition
                 ${isCurrentMonth ? '' : 'cursor-default'}
                 ${calendarDay.isSelected ? 'font-bold text-white' : ''}
-                ${calendarDay.isToday && !calendarDay.isSelected ? 'font-bold' : ''}
+                ${
+                  calendarDay.isToday && !calendarDay.isSelected
+                    ? 'font-bold'
+                    : ''
+                }
               `}
               style={{
-                backgroundColor: calendarDay.isSelected ? 'var(--virpal-primary)' : 'transparent',
-                color: calendarDay.isSelected 
-                  ? 'white' 
-                  : calendarDay.isToday 
-                    ? 'var(--virpal-primary)' 
-                    : isCurrentMonth 
-                      ? 'var(--virpal-neutral-default)' 
-                      : 'var(--virpal-neutral-dark)',
-                cursor: isCurrentMonth ? 'pointer' : 'default'
+                backgroundColor: calendarDay.isSelected
+                  ? 'var(--virpal-primary)'
+                  : 'transparent',
+                color: calendarDay.isSelected
+                  ? 'white'
+                  : calendarDay.isToday
+                  ? 'var(--virpal-primary)'
+                  : isCurrentMonth
+                  ? 'var(--virpal-neutral-default)'
+                  : 'var(--virpal-neutral-dark)',
+                cursor: isCurrentMonth ? 'pointer' : 'default',
               }}
               onMouseEnter={(e) => {
                 if (isCurrentMonth && !calendarDay.isSelected) {
-                  e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+                  e.currentTarget.style.backgroundColor =
+                    'var(--virpal-accent-hover)';
                   e.currentTarget.style.cursor = 'pointer';
                 } else if (!isCurrentMonth) {
                   e.currentTarget.style.cursor = 'default';
@@ -166,17 +233,20 @@ const Calendar: React.FC<CalendarProps> = ({
               }}
               onMouseDown={(e) => {
                 if (isCurrentMonth && !calendarDay.isSelected) {
-                  e.currentTarget.style.backgroundColor = 'var(--virpal-accent-active)';
+                  e.currentTarget.style.backgroundColor =
+                    'var(--virpal-accent-active)';
                 }
               }}
               onMouseUp={(e) => {
                 if (isCurrentMonth && !calendarDay.isSelected) {
-                  e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+                  e.currentTarget.style.backgroundColor =
+                    'var(--virpal-accent-hover)';
                 }
               }}
             >
               {calendarDay.date.getDate()}
-              {calendarDay.hasHistory && (                <div
+              {calendarDay.hasHistory && (
+                <div
                   className="absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full theme-transition"
                   style={{ backgroundColor: 'var(--virpal-secondary)' }}
                 />

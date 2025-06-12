@@ -1,8 +1,20 @@
 /**
- * TTS Control Component
- * 
- * Provides UI controls for Text-to-Speech functionality
- * Includes enable/disable toggle, speaking indicator, and stop button
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
  */
 
 import React from 'react';
@@ -29,29 +41,31 @@ const TTSControls: React.FC<TTSControlsProps> = ({
   onToggleTTS,
   onStopSpeaking,
   onInitialize,
-  className = "",
+  className = '',
   isAuthenticated = false,
   onLoginClick,
 }) => {
   // Icons using emoji for simplicity (can be replaced with icon library)
   const getSpeakerIcon = () => {
-    if (isSpeaking) return "🔊";
-    if (isEnabled) return "🔉";
-    return "🔇";
+    if (isSpeaking) return '🔊';
+    if (isEnabled) return '🔉';
+    return '🔇';
   };
 
   const getStatusColor = () => {
-    if (initializationError) return "text-red-500";
-    if (isSpeaking) return "text-blue-500";
-    if (isEnabled) return "text-green-500";
-    return "text-gray-400";
+    if (initializationError) return 'text-red-500';
+    if (isSpeaking) return 'text-blue-500';
+    if (isEnabled) return 'text-green-500';
+    return 'text-gray-400';
   };
   const getTooltipText = () => {
-    if (!isAuthenticated) return "TTS hanya tersedia untuk pengguna yang sudah login";
+    if (!isAuthenticated)
+      return 'TTS hanya tersedia untuk pengguna yang sudah login';
     if (initializationError) return `TTS Error: ${initializationError}`;
-    if (!isInitialized) return "TTS not initialized";
-    if (isSpeaking) return "Currently speaking - click to stop";
-    if (isEnabled) return "TTS enabled - click to disable";    return "TTS disabled - click to enable";
+    if (!isInitialized) return 'TTS not initialized';
+    if (isSpeaking) return 'Currently speaking - click to stop';
+    if (isEnabled) return 'TTS enabled - click to disable';
+    return 'TTS disabled - click to enable';
   };
 
   const handleClick = () => {
@@ -61,7 +75,7 @@ const TTSControls: React.FC<TTSControlsProps> = ({
       }
       return;
     }
-    
+
     if (isSpeaking) {
       onStopSpeaking();
     } else {
@@ -80,17 +94,19 @@ const TTSControls: React.FC<TTSControlsProps> = ({
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      {/* Main TTS Control Button */}      <button
+      {/* Main TTS Control Button */}{' '}
+      <button
         onClick={handleClick}
-        disabled={(!isInitialized && !initializationError) || (!isAuthenticated)}
+        disabled={(!isInitialized && !initializationError) || !isAuthenticated}
         className={`
           flex items-center justify-center
           w-10 h-10 rounded-full
           transition-all duration-200
           ${getStatusColor()}
-          ${(isInitialized || initializationError) && isAuthenticated
-            ? 'hover:bg-gray-100 active:scale-95 cursor-pointer' 
-            : 'cursor-not-allowed opacity-50'
+          ${
+            (isInitialized || initializationError) && isAuthenticated
+              ? 'hover:bg-gray-100 active:scale-95 cursor-pointer'
+              : 'cursor-not-allowed opacity-50'
           }
           ${isSpeaking ? 'animate-pulse' : ''}
           ${!isAuthenticated ? 'border-2 border-orange-300' : ''}
@@ -99,24 +115,28 @@ const TTSControls: React.FC<TTSControlsProps> = ({
         aria-label={getTooltipText()}
       >
         <span className="text-xl">{getSpeakerIcon()}</span>
-      </button>      {/* Status Indicator */}
+      </button>{' '}
+      {/* Status Indicator */}
       <div className="flex flex-col">
         <span className={`text-xs font-medium ${getStatusColor()}`}>
-          {!isAuthenticated ? "Login Required" :
-           isSpeaking ? "Speaking..." : 
-           isEnabled ? "TTS On" : 
-           initializationError ? "TTS Error" :
-           isInitialized ? "TTS Off" : "Loading..."}
+          {!isAuthenticated
+            ? 'Login Required'
+            : isSpeaking
+            ? 'Speaking...'
+            : isEnabled
+            ? 'TTS On'
+            : initializationError
+            ? 'TTS Error'
+            : isInitialized
+            ? 'TTS Off'
+            : 'Loading...'}
         </span>
-        
+
         {/* Voice info when speaking */}
         {isSpeaking && (
-          <span className="text-xs text-gray-500">
-            Brian Neural
-          </span>
+          <span className="text-xs text-gray-500">Brian Neural</span>
         )}
       </div>
-
       {/* Retry button for initialization errors */}
       {initializationError && onInitialize && (
         <button
@@ -134,7 +154,8 @@ const TTSControls: React.FC<TTSControlsProps> = ({
         >
           🔄
         </button>
-      )}      {/* Azure Speech indicator - only show when authenticated */}
+      )}{' '}
+      {/* Azure Speech indicator - only show when authenticated */}
       {isAuthenticated && isInitialized && !initializationError && (
         <div className="flex items-center">
           <span className="text-xs text-blue-600 font-medium">Azure</span>

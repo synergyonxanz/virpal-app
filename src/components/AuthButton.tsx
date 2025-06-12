@@ -1,9 +1,28 @@
 /**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+/**
  * AuthButton Component - Login/Logout Button untuk Azure Entra External ID
- * 
+ *
  * Komponen button yang menangani login dan logout dengan UI yang responsif
  * dan feedback yang jelas untuk user
- * 
+ *
  * Features:
  * - Login popup/redirect options
  * - Loading states dengan spinner
@@ -11,7 +30,7 @@
  * - User profile display
  * - Responsive design
  * - Accessibility support
- * 
+ *
  * Best Practices Applied:
  * - React component patterns
  * - Accessibility (ARIA labels, keyboard navigation)
@@ -20,7 +39,7 @@
  * - CSS-in-JS dengan Tailwind
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /**
  * Props untuk AuthButton component
@@ -62,15 +81,17 @@ interface AuthButtonProps {
 /**
  * Loading Spinner Component
  */
-const LoadingSpinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'sm' }) => {
+const LoadingSpinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({
+  size = 'sm',
+}) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6',
-    lg: 'w-8 h-8'
+    lg: 'w-8 h-8',
   };
 
   return (
-    <div 
+    <div
       className={`animate-spin rounded-full border-2 border-white border-t-transparent ${sizeClasses[size]}`}
       role="status"
       aria-label="Loading"
@@ -82,33 +103,49 @@ const LoadingSpinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'sm' }
 
 /**
  * Error Display Component - VIRPAL Style
+ * @internal Component is currently unused but kept for future error handling
  */
-const ErrorDisplay: React.FC<{ error: string; onDismiss?: () => void }> = ({ error, onDismiss }) => (
-  <div 
+/*
+const ErrorDisplay: React.FC<{ error: string; onDismiss?: () => void }> = ({
+  error,
+  onDismiss,
+}) => (
+  <div
     className="rounded-md p-3 mb-4 border theme-transition"
     style={{
       backgroundColor: 'var(--virpal-accent)',
       borderColor: 'var(--virpal-primary)',
-      color: 'var(--virpal-primary)'
+      color: 'var(--virpal-primary)',
     }}
   >
     <div className="flex">
       <div className="flex-shrink-0">
-        <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style={{ color: 'var(--virpal-primary)' }}>
-          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+        <svg
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style={{ color: 'var(--virpal-primary)' }}
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clipRule="evenodd"
+          />
         </svg>
       </div>
       <div className="ml-3">
-        <p className="text-sm" style={{ color: 'var(--virpal-primary)' }}>{error}</p>
+        <p className="text-sm" style={{ color: 'var(--virpal-primary)' }}>
+          {error}
+        </p>
       </div>
       {onDismiss && (
         <div className="ml-auto pl-3">
           <button
             onClick={onDismiss}
             className="inline-flex focus:outline-none focus:ring-2 transition-colors theme-transition"
-            style={{ 
+            style={{
               color: 'var(--virpal-primary)',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = 'var(--virpal-primary-hover)';
@@ -120,7 +157,11 @@ const ErrorDisplay: React.FC<{ error: string; onDismiss?: () => void }> = ({ err
             aria-label="Dismiss error"
           >
             <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
             </svg>
           </button>
         </div>
@@ -128,6 +169,7 @@ const ErrorDisplay: React.FC<{ error: string; onDismiss?: () => void }> = ({ err
     </div>
   </div>
 );
+*/
 
 /**
  * AuthButton Component
@@ -136,7 +178,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   // Authentication state from parent
   isAuthenticated,
   user,
-  error,
+  error: _error, // Not used in current implementation
   isInitialized,
   // Authentication methods from parent
   onLogin,
@@ -149,7 +191,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   loginText = 'Login',
   logoutText = 'Sign Out',
   loadingComponent,
-  errorComponent,
+  errorComponent: _errorComponent, // Not used in current implementation
   onLoginSuccess,
   onLogoutSuccess,
   onShowUserDetails,
@@ -163,7 +205,10 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setShowDropdown(false);
       }
     };
@@ -174,7 +219,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
         document.removeEventListener('mousedown', handleClickOutside);
       };
     }
-    
+
     return undefined;
   }, [showDropdown]);
   // Fix the loading logic: show loading only when:
@@ -187,8 +232,9 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   const handleLogin = async () => {
     try {
       setLocalLoading(true);
-      onClearError();      await onLogin();
-      
+      onClearError();
+      await onLogin();
+
       if (onLoginSuccess) {
         onLoginSuccess();
       }
@@ -208,9 +254,9 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
     try {
       setLocalLoading(true);
       onClearError();
-      
+
       await onLogout();
-        if (onLogoutSuccess) {
+      if (onLogoutSuccess) {
         onLogoutSuccess();
       }
     } catch (error) {
@@ -220,7 +266,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
     } finally {
       setLocalLoading(false);
     }
-  };  // Show loading saat initialization - with timeout
+  }; // Show loading saat initialization - with timeout
   if (!isInitialized) {
     return (
       <div className={`flex flex-col ${className}`}>
@@ -233,36 +279,42 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
     // Errors now handled by parent component's toast system
     return null;
   };
-      // Authenticated state - show user profile circle with dropdown - VIRPAL Style
+  // Authenticated state - show user profile circle with dropdown - VIRPAL Style
   if (isAuthenticated && user) {
     return (
       <div className={`relative ${className}`}>
         {renderError()}
         {showProfile && (
-          <div className="relative" ref={dropdownRef}>            <button
+          <div className="relative" ref={dropdownRef}>
+            {' '}
+            <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="flex items-center justify-center w-10 h-10 rounded-full font-medium focus:outline-none focus:ring-2 transition-all duration-200 theme-transition"
               style={{
                 backgroundColor: 'var(--virpal-primary)',
                 color: 'white',
                 cursor: 'pointer',
-                boxShadow: '0 0 0 2px var(--virpal-primary)'
+                boxShadow: '0 0 0 2px var(--virpal-primary)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--virpal-primary-hover)';
+                e.currentTarget.style.backgroundColor =
+                  'var(--virpal-primary-hover)';
                 e.currentTarget.style.cursor = 'pointer';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'var(--virpal-primary)';
               }}
               onMouseDown={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--virpal-primary-active)';
+                e.currentTarget.style.backgroundColor =
+                  'var(--virpal-primary-active)';
               }}
               onMouseUp={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--virpal-primary-hover)';
+                e.currentTarget.style.backgroundColor =
+                  'var(--virpal-primary-hover)';
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = '0 0 0 2px var(--virpal-primary)';
+                e.currentTarget.style.boxShadow =
+                  '0 0 0 2px var(--virpal-primary)';
               }}
               onBlur={(e) => {
                 e.currentTarget.style.boxShadow = 'none';
@@ -270,26 +322,41 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
               aria-label={`Account menu for ${user.displayName || user.email}`}
               title={user.displayName || user.email || 'User'}
             >
-              {user.displayName 
-                ? user.displayName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)
+              {user.displayName
+                ? user.displayName
+                    .split(' ')
+                    .map((n: string) => n[0])
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2)
                 : user.email?.charAt(0).toUpperCase() || '?'}
             </button>
-            
             {/* Dropdown Menu - VIRPAL Style */}
             {showDropdown && (
-              <div 
+              <div
                 className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 z-50 border theme-transition"
                 style={{
                   backgroundColor: 'var(--virpal-content-bg)',
-                  borderColor: 'var(--virpal-neutral-lighter)'
+                  borderColor: 'var(--virpal-neutral-lighter)',
                 }}
               >
-                <div className="px-4 py-2 border-b theme-transition" style={{ borderColor: 'var(--virpal-neutral-lighter)' }}>
-                  <p className="text-sm font-medium theme-transition" style={{ color: 'var(--virpal-neutral-default)' }}>
+                <div
+                  className="px-4 py-2 border-b theme-transition"
+                  style={{ borderColor: 'var(--virpal-neutral-lighter)' }}
+                >
+                  <p
+                    className="text-sm font-medium theme-transition"
+                    style={{ color: 'var(--virpal-neutral-default)' }}
+                  >
                     {user.displayName || 'User'}
                   </p>
                   {user.email && (
-                    <p className="text-xs theme-transition" style={{ color: 'var(--virpal-neutral-dark)' }}>{user.email}</p>
+                    <p
+                      className="text-xs theme-transition"
+                      style={{ color: 'var(--virpal-neutral-dark)' }}
+                    >
+                      {user.email}
+                    </p>
                   )}
                 </div>
                 {onShowUserDetails && (
@@ -301,10 +368,11 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
                     className="w-full text-left px-4 py-2 text-sm focus:outline-none transition-colors theme-transition"
                     style={{
                       color: 'var(--virpal-neutral-default)',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+                      e.currentTarget.style.backgroundColor =
+                        'var(--virpal-accent-hover)';
                       e.currentTarget.style.cursor = 'pointer';
                     }}
                     onMouseLeave={(e) => {
@@ -326,11 +394,12 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
                   `}
                   style={{
                     color: 'var(--virpal-neutral-default)',
-                    cursor: isCurrentlyLoading ? 'not-allowed' : 'pointer'
+                    cursor: isCurrentlyLoading ? 'not-allowed' : 'pointer',
                   }}
                   onMouseEnter={(e) => {
                     if (!isCurrentlyLoading) {
-                      e.currentTarget.style.backgroundColor = 'var(--virpal-accent-hover)';
+                      e.currentTarget.style.backgroundColor =
+                        'var(--virpal-accent-hover)';
                       e.currentTarget.style.cursor = 'pointer';
                     }
                   }}
@@ -360,25 +429,26 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   return (
     <div className={`flex flex-col ${className}`}>
       {renderError()}
-        <button
+      <button
         onClick={handleLogin}
         disabled={isCurrentlyLoading}
         className={`
           inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium transition-all duration-200 theme-transition
-          ${isCurrentlyLoading 
-            ? 'cursor-not-allowed opacity-50' 
-            : ''
-          }
+          ${isCurrentlyLoading ? 'cursor-not-allowed opacity-50' : ''}
         `}
         style={{
-          backgroundColor: isCurrentlyLoading ? 'var(--virpal-neutral-lighter)' : 'var(--virpal-secondary)',
+          backgroundColor: isCurrentlyLoading
+            ? 'var(--virpal-neutral-lighter)'
+            : 'var(--virpal-secondary)',
           color: 'white',
           cursor: isCurrentlyLoading ? 'not-allowed' : 'pointer',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+          boxShadow:
+            '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         }}
         onMouseEnter={(e) => {
           if (!isCurrentlyLoading) {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-secondary-hover)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-secondary-hover)';
             e.currentTarget.style.cursor = 'pointer';
           }
         }}
@@ -389,21 +459,25 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
         }}
         onMouseDown={(e) => {
           if (!isCurrentlyLoading) {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-secondary-active)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-secondary-active)';
           }
         }}
         onMouseUp={(e) => {
           if (!isCurrentlyLoading) {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-secondary-hover)';
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-secondary-hover)';
           }
         }}
         onFocus={(e) => {
           if (!isCurrentlyLoading) {
-            e.currentTarget.style.boxShadow = '0 0 0 2px var(--virpal-secondary), 0 1px 3px 0 rgba(0, 0, 0, 0.1)';
+            e.currentTarget.style.boxShadow =
+              '0 0 0 2px var(--virpal-secondary), 0 1px 3px 0 rgba(0, 0, 0, 0.1)';
           }
         }}
         onBlur={(e) => {
-          e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)';
+          e.currentTarget.style.boxShadow =
+            '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)';
         }}
         aria-label={`${loginText} with ${loginType}`}
       >
@@ -414,12 +488,21 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
           </>
         ) : (
           <>
-            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
             </svg>
             {loginText}
           </>
-        )}      </button>
+        )}{' '}
+      </button>
     </div>
   );
 };

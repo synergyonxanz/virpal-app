@@ -1,16 +1,35 @@
 /**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+/**
  * useToast Hook - Custom hook untuk mengelola toast notifications
- * 
+ *
  * Hook untuk mengelola state dan lifecycle dari toast notifications
  * Menyediakan API yang mudah digunakan untuk menampilkan berbagai jenis pesan
- * 
+ *
  * Features:
  * - Multiple toast types (info, success, warning, error)
  * - Auto-dismiss dengan timeout konfigurabel
  * - Manual dismiss
  * - Queue management untuk multiple toasts
  * - Memory leak prevention
- * 
+ *
  * Best Practices Applied:
  * - React hooks best practices
  * - Memory management
@@ -42,15 +61,31 @@ interface UseToastReturn {
   /** Array dari semua toast yang aktif */
   toasts: ToastData[];
   /** Menampilkan toast dengan pesan dan tipe tertentu */
-  showToast: (message: string, type: ToastType, options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>) => string;
+  showToast: (
+    message: string,
+    type: ToastType,
+    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+  ) => string;
   /** Menampilkan toast info */
-  showInfo: (message: string, options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>) => string;
+  showInfo: (
+    message: string,
+    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+  ) => string;
   /** Menampilkan toast success */
-  showSuccess: (message: string, options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>) => string;
+  showSuccess: (
+    message: string,
+    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+  ) => string;
   /** Menampilkan toast warning */
-  showWarning: (message: string, options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>) => string;
+  showWarning: (
+    message: string,
+    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+  ) => string;
   /** Menampilkan toast error */
-  showError: (message: string, options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>) => string;
+  showError: (
+    message: string,
+    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+  ) => string;
   /** Menghapus toast berdasarkan ID */
   removeToast: (id: string) => void;
   /** Menghapus semua toast */
@@ -71,7 +106,7 @@ export const useToast = (options: UseToastOptions = {}): UseToastReturn => {
   const {
     maxToasts = 5,
     defaultDuration = 5000,
-    defaultDismissible = true
+    defaultDismissible = true,
   } = options;
 
   const [toasts, setToasts] = useState<ToastData[]>([]);
@@ -82,36 +117,39 @@ export const useToast = (options: UseToastOptions = {}): UseToastReturn => {
     return () => {
       setToasts([]);
     };
-  }, []);  /**
+  }, []);
+  /**
    * Menambahkan toast baru
    */
-  const addToast = useCallback((toastData: Omit<ToastData, 'id'>): string => {
-    const id = generateToastId();
-    const newToast: ToastData = {
-      id,
-      duration: defaultDuration,
-      dismissible: defaultDismissible,
-      ...toastData
-    };
+  const addToast = useCallback(
+    (toastData: Omit<ToastData, 'id'>): string => {
+      const id = generateToastId();
+      const newToast: ToastData = {
+        id,
+        duration: defaultDuration,
+        dismissible: defaultDismissible,
+        ...toastData,
+      };
 
-    setToasts(prevToasts => {
-      // Jika sudah mencapai maksimum, hapus toast yang paling lama
-      const updatedToasts = prevToasts.length >= maxToasts
-        ? prevToasts.slice(1)
-        : prevToasts;
+      setToasts((prevToasts) => {
+        // Jika sudah mencapai maksimum, hapus toast yang paling lama
+        const updatedToasts =
+          prevToasts.length >= maxToasts ? prevToasts.slice(1) : prevToasts;
 
-      return [...updatedToasts, newToast];
-    });
+        return [...updatedToasts, newToast];
+      });
 
-    toastCounterRef.current += 1;
-    return id;
-  }, [maxToasts, defaultDuration, defaultDismissible]);
+      toastCounterRef.current += 1;
+      return id;
+    },
+    [maxToasts, defaultDuration, defaultDismissible]
+  );
 
   /**
    * Menghapus toast berdasarkan ID
    */
   const removeToast = useCallback((id: string) => {
-    setToasts(prevToasts => prevToasts.filter(toast => toast.id !== id));
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
   }, []);
 
   /**
@@ -119,58 +157,75 @@ export const useToast = (options: UseToastOptions = {}): UseToastReturn => {
    */
   const clearToasts = useCallback(() => {
     setToasts([]);
-  }, []);  /**
+  }, []);
+  /**
    * Menampilkan toast generic
    */
-  const showToast = useCallback((
-    message: string,
-    type: ToastType,
-    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
-  ): string => {
-    return addToast({
-      message,
-      type,
-      ...options
-    });
-  }, [addToast]);
+  const showToast = useCallback(
+    (
+      message: string,
+      type: ToastType,
+      options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+    ): string => {
+      return addToast({
+        message,
+        type,
+        ...options,
+      });
+    },
+    [addToast]
+  );
 
   /**
    * Menampilkan toast info
    */
-  const showInfo = useCallback((
-    message: string,
-    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
-  ): string => {
-    return showToast(message, 'info', options);
-  }, [showToast]);
+  const showInfo = useCallback(
+    (
+      message: string,
+      options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+    ): string => {
+      return showToast(message, 'info', options);
+    },
+    [showToast]
+  );
 
   /**
    * Menampilkan toast success
    */
-  const showSuccess = useCallback((
-    message: string,
-    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
-  ): string => {
-    return showToast(message, 'success', options);
-  }, [showToast]);
+  const showSuccess = useCallback(
+    (
+      message: string,
+      options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+    ): string => {
+      return showToast(message, 'success', options);
+    },
+    [showToast]
+  );
 
   /**
    * Menampilkan toast warning
    */
-  const showWarning = useCallback((
-    message: string,
-    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
-  ): string => {
-    return showToast(message, 'warning', options);
-  }, [showToast]);  /**
+  const showWarning = useCallback(
+    (
+      message: string,
+      options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+    ): string => {
+      return showToast(message, 'warning', options);
+    },
+    [showToast]
+  );
+  /**
    * Menampilkan toast error
    */
-  const showError = useCallback((
-    message: string,
-    options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
-  ): string => {
-    return showToast(message, 'error', options);
-  }, [showToast]);
+  const showError = useCallback(
+    (
+      message: string,
+      options?: Partial<Pick<ToastData, 'duration' | 'dismissible'>>
+    ): string => {
+      return showToast(message, 'error', options);
+    },
+    [showToast]
+  );
 
   return {
     toasts,
@@ -180,7 +235,7 @@ export const useToast = (options: UseToastOptions = {}): UseToastReturn => {
     showWarning,
     showError,
     removeToast,
-    clearToasts
+    clearToasts,
   };
 };
 

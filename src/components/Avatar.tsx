@@ -1,3 +1,22 @@
+/**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
 import React from 'react';
 import type { AvatarExpression } from '../types'; // Pastikan tipe ini sudah ada
 
@@ -10,7 +29,7 @@ interface AvatarProps {
 const Avatar: React.FC<AvatarProps> = ({
   expression = 'neutral',
   imageUrl, // Jika ini diberikan, akan diutamakan
-  altText = "Virpal Avatar",
+  altText = 'Virpal Avatar',
 }) => {
   // Fungsi untuk menentukan path gambar berdasarkan ekspresi
   // Asumsi gambar ada di public/images/nama-ekspresi.png
@@ -59,12 +78,16 @@ const Avatar: React.FC<AvatarProps> = ({
           // Ganti dengan placeholder jika gambar error, atau biarkan style parent mengambil alih
           target.style.display = 'none'; // Sembunyikan gambar yang error
           const parent = target.parentElement;
-          if (parent && !parent.querySelector('.avatar-placeholder-text')) { // Hindari duplikasi placeholder
+          if (parent && !parent.querySelector('.avatar-placeholder-text')) {
+            // Hindari duplikasi placeholder
             parent.style.backgroundColor = placeholderStyle.backgroundColor; // Atur bg dari style parent
             const placeholderText = document.createElement('span');
-            placeholderText.className = 'avatar-placeholder-text text-xs font-semibold';
+            placeholderText.className =
+              'avatar-placeholder-text text-xs font-semibold';
             placeholderText.style.color = placeholderStyle.color;
-            placeholderText.textContent = expression.substring(0,3).toUpperCase(); // Misal: NEU, HAP
+            placeholderText.textContent = expression
+              .substring(0, 3)
+              .toUpperCase(); // Misal: NEU, HAP
             parent.appendChild(placeholderText);
           }
         }}

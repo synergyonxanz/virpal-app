@@ -1,21 +1,66 @@
-MIT License
+PROPRIETARY SOFTWARE LICENSE
 
-Copyright (c) 2025 Achmad Reihan Alfaiz
+VirPal App - AI Assistant with Azure Functions
+Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. DEFINITIONS
+   "Software" refers to the VirPal App application, including all source code,
+   documentation, assets, and related materials.
+   "Author" refers to Achmad Reihan Alfaiz.
+   "You" refers to any individual or entity using this Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. GRANT OF LICENSE
+   Subject to the terms and conditions of this License, the Author grants You
+   a limited, non-exclusive, non-transferable license to:
+
+   - View the source code for educational and portfolio evaluation purposes
+   - Run the Software for demonstration and evaluation purposes only
+   - Study the Software architecture and implementation for learning purposes
+
+3. RESTRICTIONS
+   You may NOT:
+
+   - Modify, adapt, or create derivative works based on the Software
+   - Distribute, publish, or make available the Software or any part thereof
+   - Use the Software for commercial purposes without explicit written permission
+   - Remove or alter any copyright notices or proprietary markings
+   - Reverse engineer, decompile, or disassemble the Software
+   - Use the Software in any production environment without authorization
+
+4. PORTFOLIO AND DEMONSTRATION USE
+   This Software is made available primarily for:
+
+   - Portfolio demonstration purposes
+   - Technical skill evaluation
+   - Educational review of modern Azure development practices
+   - Showcase of enterprise-grade application architecture
+
+5. INTELLECTUAL PROPERTY
+   The Software and all intellectual property rights therein are and shall
+   remain the exclusive property of the Author. This License does not grant
+   You any rights to use the Author's trademarks, service marks, or logos.
+
+6. DISCLAIMER OF WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+   IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+   DEALINGS IN THE SOFTWARE.
+
+8. TERMINATION
+   This License is effective until terminated. Your rights under this License
+   will terminate automatically without notice if You fail to comply with any
+   term(s) of this License.
+
+9. CONTACT
+   For licensing inquiries, commercial use requests, or other permissions,
+   please contact: reihan3000@gmail.com
+
+By using this Software, You acknowledge that You have read this License,
+understand it, and agree to be bound by its terms and conditions.

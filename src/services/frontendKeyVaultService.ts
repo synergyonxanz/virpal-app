@@ -1,6 +1,25 @@
 /**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+/**
  * Frontend Key Vault Service
- * 
+ *
  * Service untuk mengakses Azure Key Vault melalui Azure Functions
  * Karena frontend tidak bisa langsung akses Key Vault, kita gunakan Azure Functions sebagai proxy
  */
@@ -25,7 +44,10 @@ const getGlobalFallbackWarnings = (): Set<string> => {
 const updateGlobalFallbackWarnings = (warnings: Set<string>) => {
   if (typeof window !== 'undefined' && window.sessionStorage) {
     try {
-      sessionStorage.setItem('fallbackWarningsShown', JSON.stringify([...warnings]));
+      sessionStorage.setItem(
+        'fallbackWarningsShown',
+        JSON.stringify([...warnings])
+      );
     } catch (error) {
       // Silently fail to avoid console noise
     }
@@ -34,10 +56,11 @@ const updateGlobalFallbackWarnings = (warnings: Set<string>) => {
 
 class FrontendKeyVaultService {
   private functionUrl: string;
-  private secretCache: Map<string, { value: string; timestamp: number }> = new Map();
+  private secretCache: Map<string, { value: string; timestamp: number }> =
+    new Map();
   private cacheTTL = 5 * 60 * 1000; // 5 minutes cache
   private fallbackWarningsShown = getGlobalFallbackWarnings(); // Use persistent tracking
-    // Circuit breaker pattern for resilience - Azure best practices
+  // Circuit breaker pattern for resilience - Azure best practices
   private failureCount = 0;
   private lastFailureTime = 0;
   private circuitBreakerThreshold = 3; // failures before opening circuit
@@ -47,12 +70,19 @@ class FrontendKeyVaultService {
   private isHalfOpen = false; // half-open state tracking
   constructor() {
     // Azure Functions URL - extract base URL from the endpoint
-    const endpoint = import.meta.env['VITE_AZURE_FUNCTION_ENDPOINT'] || 'http://localhost:7071/api/chat-completion' || 'http://localhost:7071/api/get-secrets';
+    const endpoint =
+      import.meta.env['VITE_AZURE_FUNCTION_ENDPOINT'] ||
+      'http://localhost:7071/api/chat-completion' ||
+      'http://localhost:7071/api/get-secrets';
     // Extract base URL (remove the specific endpoint path)
-    this.functionUrl = endpoint.replace('/api/chat-completion', '') || 'http://localhost:7071';
-    
+    this.functionUrl =
+      endpoint.replace('/api/chat-completion', '') || 'http://localhost:7071';
+
     // Log initialization status only once per session
-    logger.once('debug', `FrontendKeyVaultService initialized with ${this.fallbackWarningsShown.size} cached warnings`);
+    logger.once(
+      'debug',
+      `FrontendKeyVaultService initialized with ${this.fallbackWarningsShown.size} cached warnings`
+    );
   }
   /**
    * Enhanced circuit breaker implementation following Azure best practices
@@ -62,15 +92,17 @@ class FrontendKeyVaultService {
     if (this.failureCount < this.circuitBreakerThreshold) {
       return false; // Circuit is closed - normal operation
     }
-    
+
     const timeSinceLastFailure = Date.now() - this.lastFailureTime;
     if (timeSinceLastFailure > this.circuitBreakerTimeout) {
       // Move to half-open state after timeout
       this.isHalfOpen = true;
-      logger.info('Circuit breaker moved to half-open state - allowing limited requests');
+      logger.info(
+        'Circuit breaker moved to half-open state - allowing limited requests'
+      );
       return false;
     }
-    
+
     return true; // Circuit is open - blocking requests
   }
 
@@ -94,14 +126,16 @@ class FrontendKeyVaultService {
     this.failureCount++;
     this.lastFailureTime = Date.now();
     this.consecutiveSuccesses = 0;
-    
+
     if (this.isHalfOpen) {
       // Failure in half-open state - go back to open
       this.isHalfOpen = false;
       logger.warn('Circuit breaker opened - service still unhealthy');
     } else if (this.failureCount >= this.circuitBreakerThreshold) {
       // Threshold reached - open the circuit
-      logger.error(`Circuit breaker opened after ${this.failureCount} failures`);
+      logger.error(
+        `Circuit breaker opened after ${this.failureCount} failures`
+      );
     }
   }
 
@@ -117,9 +151,12 @@ class FrontendKeyVaultService {
     try {
       // Use safe authentication check to avoid MSAL initialization errors
       if (authService.isSafelyAuthenticated()) {
-        const accessToken = await authService.safeGetAccessToken();        if (accessToken) {
+        const accessToken = await authService.safeGetAccessToken();
+        if (accessToken) {
           headers['Authorization'] = `Bearer ${accessToken}`;
-          logger.debug('Successfully obtained access token for Key Vault request');
+          logger.debug(
+            'Successfully obtained access token for Key Vault request'
+          );
         } else {
           logger.warn('Access token is empty or null');
         }
@@ -132,21 +169,28 @@ class FrontendKeyVaultService {
     }
 
     return headers;
-  }  /**
+  }
+  /**
    * Get secret from Azure Key Vault via Azure Functions with Circuit Breaker pattern
    */
   async getSecret(secretName: string): Promise<string | null> {
     try {
       // Circuit breaker check - Azure best practice for resilience
       if (this.isCircuitOpen()) {
-        logger.warn(`Circuit breaker is open - rejecting request for secret: ${secretName}`);
+        logger.warn(
+          `Circuit breaker is open - rejecting request for secret: ${secretName}`
+        );
         // Try development fallback when circuit is open
         const fallbackValue = this.getDevelopmentFallback(secretName);
         if (fallbackValue) {
-          logger.info(`Using development fallback for ${secretName} due to open circuit`);
+          logger.info(
+            `Using development fallback for ${secretName} due to open circuit`
+          );
           return fallbackValue;
         }
-        throw new Error('Service temporarily unavailable - circuit breaker is open');
+        throw new Error(
+          'Service temporarily unavailable - circuit breaker is open'
+        );
       }
 
       // Check cache first - but only use cache if value is not null/empty
@@ -158,7 +202,9 @@ class FrontendKeyVaultService {
           return cached.value;
         } else {
           // Remove null/empty cached values to force retry
-          logger.debug(`Removing null/empty cached value for secret: ${secretName}`);
+          logger.debug(
+            `Removing null/empty cached value for secret: ${secretName}`
+          );
           this.secretCache.delete(secretName);
         }
       }
@@ -166,10 +212,16 @@ class FrontendKeyVaultService {
       // In development, provide fallback values for common secrets
       if (import.meta.env.DEV && this.isDevelopmentEnvironment()) {
         // Special handling for Azure Speech Service - Key Vault only
-        if (secretName.includes('azure-speech-service') || secretName === 'SPEECH-KEY' || secretName === 'SPEECH-REGION') {
+        if (
+          secretName.includes('azure-speech-service') ||
+          secretName === 'SPEECH-KEY' ||
+          secretName === 'SPEECH-REGION'
+        ) {
           // Only show warning once per secret to reduce console noise
           if (!this.fallbackWarningsShown.has(`keyvault-only-${secretName}`)) {
-            logger.warn(`[KEY VAULT ONLY] ${secretName} must be configured in Azure Key Vault - no fallback available`);
+            logger.warn(
+              `[KEY VAULT ONLY] ${secretName} must be configured in Azure Key Vault - no fallback available`
+            );
             this.fallbackWarningsShown.add(`keyvault-only-${secretName}`);
             updateGlobalFallbackWarnings(this.fallbackWarningsShown);
           }
@@ -180,14 +232,21 @@ class FrontendKeyVaultService {
             logger.debug(`[DEV MODE] Using fallback for secret: ${secretName}`);
             this.fallbackWarningsShown.add(secretName);
             updateGlobalFallbackWarnings(this.fallbackWarningsShown);
-            logger.debug(`Added ${secretName} to fallback warnings. Total tracked: ${this.fallbackWarningsShown.size}`);
+            logger.debug(
+              `Added ${secretName} to fallback warnings. Total tracked: ${this.fallbackWarningsShown.size}`
+            );
           } else {
-            logger.debug(`Skipping duplicate warning for secret: ${secretName} (already shown)`);
+            logger.debug(
+              `Skipping duplicate warning for secret: ${secretName} (already shown)`
+            );
           }
           const fallbackValue = this.getDevelopmentFallback(secretName);
           if (fallbackValue) {
             // Cache the fallback value to prevent repeated calls
-            this.secretCache.set(secretName, { value: fallbackValue, timestamp: Date.now() });
+            this.secretCache.set(secretName, {
+              value: fallbackValue,
+              timestamp: Date.now(),
+            });
             return fallbackValue;
           }
         }
@@ -202,11 +261,14 @@ class FrontendKeyVaultService {
 
       let response: Response;
       try {
-        response = await fetch(`${this.functionUrl}/api/get-secret?name=${secretName}`, {
-          method: 'GET',
-          headers,
-          signal: controller.signal
-        });
+        response = await fetch(
+          `${this.functionUrl}/api/get-secret?name=${secretName}`,
+          {
+            method: 'GET',
+            headers,
+            signal: controller.signal,
+          }
+        );
 
         clearTimeout(timeoutId);
 
@@ -218,14 +280,15 @@ class FrontendKeyVaultService {
           // Record failure for circuit breaker on HTTP errors
           this.recordFailure();
         }
-
       } catch (fetchError) {
         clearTimeout(timeoutId);
         // Record failure for circuit breaker on network errors
         this.recordFailure();
-        
+
         if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-          throw new Error('Request timeout - Azure Function may be starting up');
+          throw new Error(
+            'Request timeout - Azure Function may be starting up'
+          );
         }
         throw fetchError;
       }
@@ -233,19 +296,31 @@ class FrontendKeyVaultService {
       if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
           // Special handling for Azure Speech Service - no fallback
-          if (secretName.includes('azure-speech-service') || secretName === 'SPEECH-KEY' || secretName === 'SPEECH-REGION') {
-            if (!this.fallbackWarningsShown.has(`keyvault-auth-${secretName}`)) {
-              logger.error(`[KEY VAULT AUTH FAILED] Cannot access ${secretName} - Azure Speech Service requires Key Vault authentication`);
-              logger.error(`[ACTION REQUIRED] Please sign in to Azure or configure Key Vault permissions`);
+          if (
+            secretName.includes('azure-speech-service') ||
+            secretName === 'SPEECH-KEY' ||
+            secretName === 'SPEECH-REGION'
+          ) {
+            if (
+              !this.fallbackWarningsShown.has(`keyvault-auth-${secretName}`)
+            ) {
+              logger.error(
+                `[KEY VAULT AUTH FAILED] Cannot access ${secretName} - Azure Speech Service requires Key Vault authentication`
+              );
+              logger.error(
+                `[ACTION REQUIRED] Please sign in to Azure or configure Key Vault permissions`
+              );
               this.fallbackWarningsShown.add(`keyvault-auth-${secretName}`);
               updateGlobalFallbackWarnings(this.fallbackWarningsShown);
             }
             return null; // Force null return for Speech Service secrets
           }
-          
+
           // Only show auth warning once per secret to reduce console noise
           if (!this.fallbackWarningsShown.has(`auth-${secretName}`)) {
-            logger.warn(`Authentication failed for Key Vault access (${response.status}). Using development fallback if available.`);
+            logger.warn(
+              `Authentication failed for Key Vault access (${response.status}). Using development fallback if available.`
+            );
             this.fallbackWarningsShown.add(`auth-${secretName}`);
             updateGlobalFallbackWarnings(this.fallbackWarningsShown);
           }
@@ -254,7 +329,7 @@ class FrontendKeyVaultService {
             return fallbackValue;
           }
         }
-        
+
         // Handle other HTTP errors
         let errorMessage = `HTTP ${response.status}`;
         try {
@@ -263,78 +338,96 @@ class FrontendKeyVaultService {
         } catch {
           // Ignore JSON parsing errors
         }
-        
+
         throw new Error(`Failed to get secret: ${errorMessage}`);
       }
 
       const data = await response.json();
-      
+
       // Handle response structure from Azure Function
       let secretValue: string | null = null;
-      
+
       if (data.success && data.data && data.data.value) {
         secretValue = data.data.value;
       } else if (data.value) {
         // Fallback for direct value response
         secretValue = data.value;
       } else {
-        logger.warn(`Unexpected response structure for secret ${secretName}:`, data);
+        logger.warn(
+          `Unexpected response structure for secret ${secretName}:`,
+          data
+        );
       }
 
       // Only cache the secret if it's not null/empty
       if (secretValue && secretValue.trim() !== '') {
         this.secretCache.set(secretName, {
           value: secretValue,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
         logger.debug(`Successfully cached secret: ${secretName}`);
       } else {
-        logger.warn(`Received null/empty value for secret: ${secretName}, not caching`);
+        logger.warn(
+          `Received null/empty value for secret: ${secretName}, not caching`
+        );
       }
 
       return secretValue;
-
     } catch (error) {
       // Record failure for circuit breaker
       this.recordFailure();
-      
+
       logger.error(`Error fetching secret ${secretName}:`, error);
-      
+
       // Handle specific error types with appropriate messages
       let errorMessage = 'Unknown error';
       if (error instanceof Error) {
         errorMessage = error.message;
         // Provide user-friendly error messages
         if (errorMessage.includes('timeout')) {
-          logger.warn(`[TIMEOUT] Azure Function timeout for ${secretName} - it may be starting up`);
-        } else if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
-          logger.warn(`[NETWORK] Cannot connect to Azure Function - check if it's running`);
+          logger.warn(
+            `[TIMEOUT] Azure Function timeout for ${secretName} - it may be starting up`
+          );
+        } else if (
+          errorMessage.includes('Failed to fetch') ||
+          errorMessage.includes('NetworkError')
+        ) {
+          logger.warn(
+            `[NETWORK] Cannot connect to Azure Function - check if it's running`
+          );
         } else if (errorMessage.includes('ECONNREFUSED')) {
-          logger.warn(`[CONNECTION] Azure Function is not running on ${this.functionUrl}`);
+          logger.warn(
+            `[CONNECTION] Azure Function is not running on ${this.functionUrl}`
+          );
         }
       }
-      
+
       // Try development fallback as last resort
       const fallbackValue = this.getDevelopmentFallback(secretName);
       if (fallbackValue) {
         // Only show error fallback warning once per secret
         if (!this.fallbackWarningsShown.has(`error-${secretName}`)) {
-          logger.warn(`Using development fallback for ${secretName} due to error: ${errorMessage}`);
+          logger.warn(
+            `Using development fallback for ${secretName} due to error: ${errorMessage}`
+          );
           this.fallbackWarningsShown.add(`error-${secretName}`);
           updateGlobalFallbackWarnings(this.fallbackWarningsShown);
         }
         return fallbackValue;
       }
-      
+
       return null;
     }
   }
 
   private isDevelopmentEnvironment(): boolean {
-    return import.meta.env.DEV || 
-           this.functionUrl.includes('localhost') || 
-           this.functionUrl.includes('127.0.0.1');
-  }  /**
+    return (
+      import.meta.env.DEV ||
+      this.functionUrl.includes('localhost') ||
+      this.functionUrl.includes('127.0.0.1')
+    );
+  }
+  /**
    * Get development fallback values for local development
    * These should only be used when Key Vault is not accessible
    * In production, all credentials should come from Key Vault
@@ -343,34 +436,38 @@ class FrontendKeyVaultService {
     // Only provide fallbacks in development mode
     if (import.meta.env.MODE !== 'development') {
       return null;
-    }    // Development fallback values - these come from environment variables only
+    } // Development fallback values - these come from environment variables only
     // Never hardcode actual credentials in the source code
     const fallbacks: Record<string, string> = {
-      // TEMPORARY: Cosmos DB secrets disabled for isolation testing
-      // 'azure-cosmos-db-endpoint-uri': import.meta.env['VITE_COSMOS_DB_ENDPOINT'] || '',
-      // 'azure-cosmos-db-database-name': import.meta.env['VITE_COSMOS_DB_DATABASE'] || 'virpal-dev',
-      // 'azure-cosmos-db-key': import.meta.env['VITE_COSMOS_DB_KEY'] || '',
-      'azure-cosmos-db-endpoint-uri': '',
-      'azure-cosmos-db-database-name': '',
-      'azure-cosmos-db-key': '',
-        
+      // Azure Cosmos DB - Cloud storage functionality
+      'azure-cosmos-db-endpoint-uri':
+        import.meta.env['VITE_AZURE_COSMOS_ENDPOINT'] || '',
+      'azure-cosmos-db-database-name':
+        import.meta.env['VITE_AZURE_COSMOS_DATABASE_NAME'] || 'virpal-db',
+      'azure-cosmos-db-key': import.meta.env['VITE_AZURE_COSMOS_KEY'] || '',
+      'azure-cosmos-db-connection-string':
+        import.meta.env['VITE_AZURE_COSMOS_CONNECTION_STRING'] || '',
+
       // Azure Speech Service - NO FALLBACKS, Key Vault only
       // 'azure-speech-service-endpoint': Key Vault only
-      // 'azure-speech-service-key': Key Vault only  
+      // 'azure-speech-service-key': Key Vault only
       // 'azure-speech-service-region': Key Vault only
-      
+
       // OpenAI secrets
       'OPENAI-API-KEY': import.meta.env['VITE_OPENAI_API_KEY'] || '',
-      'AZURE-OPENAI-ENDPOINT': import.meta.env['VITE_AZURE_OPENAI_ENDPOINT'] || '',
-      'AZURE-OPENAI-API-KEY': import.meta.env['VITE_AZURE_OPENAI_API_KEY'] || '',
-        
+      'AZURE-OPENAI-ENDPOINT':
+        import.meta.env['VITE_AZURE_OPENAI_ENDPOINT'] || '',
+      'AZURE-OPENAI-API-KEY':
+        import.meta.env['VITE_AZURE_OPENAI_API_KEY'] || '',
+
       // Legacy support for older secret names - NO FALLBACKS for Speech
       // 'SPEECH-KEY': Key Vault only
       // 'SPEECH-REGION': Key Vault only
     };
 
     const fallbackValue = fallbacks[secretName];
-    if (fallbackValue && fallbackValue.trim() !== '') {      // Only show detailed log once per session to reduce noise
+    if (fallbackValue && fallbackValue.trim() !== '') {
+      // Only show detailed log once per session to reduce noise
       if (!this.fallbackWarningsShown.has(`detailed-${secretName}`)) {
         logger.debug(`[DEV] Using fallback value for secret: ${secretName}`);
         this.fallbackWarningsShown.add(`detailed-${secretName}`);
@@ -381,7 +478,9 @@ class FrontendKeyVaultService {
 
     // If no fallback value found, provide helpful message (but only once)
     if (!this.fallbackWarningsShown.has(`missing-${secretName}`)) {
-      logger.warn(`[DEV] No fallback value configured for secret: ${secretName}`);
+      logger.warn(
+        `[DEV] No fallback value configured for secret: ${secretName}`
+      );
       logger.warn(`[DEV] Please add VITE_* environment variable to .env file`);
       this.fallbackWarningsShown.add(`missing-${secretName}`);
       updateGlobalFallbackWarnings(this.fallbackWarningsShown);
@@ -392,21 +491,24 @@ class FrontendKeyVaultService {
   /**
    * Get multiple secrets at once
    */
-  async getSecrets(secretNames: string[]): Promise<Record<string, string | null>> {
+  async getSecrets(
+    secretNames: string[]
+  ): Promise<Record<string, string | null>> {
     const promises = secretNames.map(async (name) => {
       const value = await this.getSecret(name);
       return { name, value };
     });
 
     const results = await Promise.all(promises);
-    
+
     const secretsMap: Record<string, string | null> = {};
     results.forEach(({ name, value }) => {
       secretsMap[name] = value;
     });
 
     return secretsMap;
-  }  /**
+  }
+  /**
    * Clear cache
    */
   clearCache(): void {
@@ -418,7 +520,7 @@ class FrontendKeyVaultService {
    * Clear cache for specific secrets (useful when authentication status changes)
    */
   clearSecretsCache(secretNames: string[]): void {
-    secretNames.forEach(name => {
+    secretNames.forEach((name) => {
       this.secretCache.delete(name);
       logger.debug(`Cleared cache for secret: ${name}`);
     });
@@ -436,7 +538,7 @@ class FrontendKeyVaultService {
 
   /**
    * Clear warning cache (useful for testing or reset)
-   */  clearWarningCache(): void {
+   */ clearWarningCache(): void {
     this.fallbackWarningsShown.clear();
     updateGlobalFallbackWarnings(this.fallbackWarningsShown);
     logger.debug('[DEV] Cleared fallback warning cache');
@@ -451,9 +553,9 @@ class FrontendKeyVaultService {
    * Health check untuk Azure Function with Circuit Breaker status
    * Mengecek apakah Azure Function dapat diakses
    */
-  async healthCheck(): Promise<{ 
-    isHealthy: boolean; 
-    message: string; 
+  async healthCheck(): Promise<{
+    isHealthy: boolean;
+    message: string;
     functionUrl: string;
     circuitBreaker: {
       isOpen: boolean;
@@ -474,19 +576,21 @@ class FrontendKeyVaultService {
             isOpen: true,
             isHalfOpen: false,
             failureCount: this.failureCount,
-            lastFailureTime: this.lastFailureTime
-          }
+            lastFailureTime: this.lastFailureTime,
+          },
         };
       }
-
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-      const response = await fetch(`${this.functionUrl}/api/get-secret?name=health-check`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal
-      });
+      const response = await fetch(
+        `${this.functionUrl}/api/get-secret?name=azure-cosmos-db-database-name`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
+        }
+      );
 
       clearTimeout(timeoutId);
 
@@ -505,8 +609,8 @@ class FrontendKeyVaultService {
           isOpen: false,
           isHalfOpen: this.isHalfOpen,
           failureCount: this.failureCount,
-          lastFailureTime: this.lastFailureTime
-        }
+          lastFailureTime: this.lastFailureTime,
+        },
       };
     } catch (error) {
       // Record failure for circuit breaker
@@ -517,7 +621,7 @@ class FrontendKeyVaultService {
         if (error.name === 'AbortError') {
           message = 'Azure Function timeout - it may be starting up';
         } else if (error.message.includes('Failed to fetch')) {
-          message = 'Cannot connect to Azure Function - check if it\'s running';
+          message = "Cannot connect to Azure Function - check if it's running";
         } else {
           message = `Azure Function error: ${error.message}`;
         }
@@ -531,8 +635,8 @@ class FrontendKeyVaultService {
           isOpen: this.isCircuitOpen(),
           isHalfOpen: this.isHalfOpen,
           failureCount: this.failureCount,
-          lastFailureTime: this.lastFailureTime
-        }
+          lastFailureTime: this.lastFailureTime,
+        },
       };
     }
   }
@@ -564,8 +668,8 @@ class FrontendKeyVaultService {
         failureCount: this.failureCount,
         lastFailureTime: this.lastFailureTime,
         threshold: this.circuitBreakerThreshold,
-        timeout: this.circuitBreakerTimeout
-      }
+        timeout: this.circuitBreakerTimeout,
+      },
     };
   }
 
@@ -592,7 +696,7 @@ class FrontendKeyVaultService {
   } {
     const now = Date.now();
     let state: 'closed' | 'open' | 'half-open' = 'closed';
-    
+
     if (this.isHalfOpen) {
       state = 'half-open';
     } else if (this.isCircuitOpen()) {
@@ -603,8 +707,9 @@ class FrontendKeyVaultService {
       state,
       failureCount: this.failureCount,
       lastFailureTime: this.lastFailureTime,
-      timeSinceLastFailure: this.lastFailureTime > 0 ? now - this.lastFailureTime : 0,
-      consecutiveSuccesses: this.consecutiveSuccesses
+      timeSinceLastFailure:
+        this.lastFailureTime > 0 ? now - this.lastFailureTime : 0,
+      consecutiveSuccesses: this.consecutiveSuccesses,
     };
   }
 }

@@ -1,90 +1,112 @@
-@import "tailwindcss";
+/**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+@import 'tailwindcss';
 
 /* Definisikan CSS Custom Properties (Variables) untuk Palet Warna VIRPAL */
 /* Ini ditempatkan di :root agar global */
 :root {
   /* Palet Warna VIRPAL */
-  --virpal-primary: #7950f2;   /* Indigo/Violet Lembut */
+  --virpal-primary: #b49bff; /* Indigo/Violet Lembut */
   --virpal-secondary: #06b6d4; /* Teal - menenangkan dan profesional */
-  --virpal-accent: #f7f3ff;   /* Lavender/Lilac Sangat Muda */
+  --virpal-accent: #f7f3ff; /* Lavender/Lilac Sangat Muda */
 
   /* States untuk Primary Color */
-  --virpal-primary-hover: #6d44ea;    /* Primary lebih gelap untuk hover */
-  --virpal-primary-active: #5b38d6;   /* Primary paling gelap untuk active */
+  --virpal-primary-hover: #9275eb; /* Primary lebih gelap untuk hover */
+  --virpal-primary-active: #674cc8; /* Primary paling gelap untuk active */
 
   /* States untuk Secondary Color */
-  --virpal-secondary-hover: #0891b2;  /* Secondary lebih gelap untuk hover */
+  --virpal-secondary-hover: #0891b2; /* Secondary lebih gelap untuk hover */
   --virpal-secondary-active: #0e7490; /* Secondary paling gelap untuk active */
 
   /* States untuk Accent/Light backgrounds */
-  --virpal-accent-hover: #ede9fe;     /* Accent sedikit lebih gelap untuk hover */
-  --virpal-accent-active: #ddd6fe;    /* Accent lebih gelap untuk active */
+  --virpal-accent-hover: #ede9fe; /* Accent sedikit lebih gelap untuk hover */
+  --virpal-accent-active: #ddd6fe; /* Accent lebih gelap untuk active */
 
   /* Sidebar specific colors */
-  --virpal-sidebar-bg: #ffffff;       /* Sidebar background (white) */
-  --virpal-sidebar-hover: #f1f5f9;    /* Light gray untuk hover sidebar items */
-  --virpal-sidebar-text: #334155;     /* Text color untuk sidebar (virpal-neutral-default) */
+  --virpal-sidebar-bg: #ffffff; /* Sidebar background (white) */
+  --virpal-sidebar-hover: #f1f5f9; /* Light gray untuk hover sidebar items */
+  --virpal-sidebar-text: #334155; /* Text color untuk sidebar (virpal-neutral-default) */
 
   --virpal-neutral-lightest: #f8fafc; /* Off-White/Light Gray (Main Background) */
   --virpal-neutral-lighter: #e2e8f0; /* Light Gray (Secondary Background) */
   --virpal-neutral-default: #334155; /* Dark Grayish Blue (Main Text) */
-  --virpal-neutral-dark: #64748b;    /* Medium Grayish Blue (Secondary Text) */
+  --virpal-neutral-dark: #64748b; /* Medium Grayish Blue (Secondary Text) */
 
   /* Main content area backgrounds */
-  --virpal-main-bg: #f8fafc;         /* Main background */
-  --virpal-content-bg: #ffffff;      /* Content background (cards, inputs, etc) */
-  --virpal-header-bg: #f8fafc;       /* Header background */
+  --virpal-main-bg: #f8fafc; /* Main background */
+  --virpal-content-bg: #ffffff; /* Content background (cards, inputs, etc) */
+  --virpal-header-bg: #f8fafc; /* Header background */
 
   /* Status and alert colors */
-  --virpal-danger: #dc2626;          /* Red for delete/danger actions */
-  --virpal-danger-hover: #b91c1c;    /* Darker red for hover */
-  --virpal-success: #16a34a;         /* Green for success states */
-  --virpal-warning: #d97706;         /* Orange for warnings */
+  --virpal-danger: #dc2626; /* Red for delete/danger actions */
+  --virpal-danger-hover: #b91c1c; /* Darker red for hover */
+  --virpal-success: #16a34a; /* Green for success states */
+  --virpal-warning: #d97706; /* Orange for warnings */
 
   /* (Opsional) Anda juga bisa mendefinisikan font di sini jika mau */
-  --font-sans: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: 'Inter var', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
 }
 
 /* Dark mode variables */
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Palet Warna VIRPAL - Dark Mode */
-  --virpal-primary: #8b5cf6;   /* Violet sedikit lebih terang untuk dark mode */
+  --virpal-primary: #8b5cf6; /* Violet sedikit lebih terang untuk dark mode */
   --virpal-secondary: #22d3ee; /* Cyan lebih terang untuk dark mode */
-  --virpal-accent: #1e1b4b;    /* Dark purple untuk accent di dark mode */
+  --virpal-accent: #1e1b4b; /* Dark purple untuk accent di dark mode */
 
   /* States untuk Primary Color - Dark Mode */
-  --virpal-primary-hover: #a78bfa;    /* Primary lebih terang untuk hover */
-  --virpal-primary-active: #c4b5fd;   /* Primary paling terang untuk active */
+  --virpal-primary-hover: #a78bfa; /* Primary lebih terang untuk hover */
+  --virpal-primary-active: #c4b5fd; /* Primary paling terang untuk active */
 
   /* States untuk Secondary Color - Dark Mode */
-  --virpal-secondary-hover: #67e8f9;  /* Secondary lebih terang untuk hover */
+  --virpal-secondary-hover: #67e8f9; /* Secondary lebih terang untuk hover */
   --virpal-secondary-active: #a5f3fc; /* Secondary paling terang untuk active */
 
   /* States untuk Accent/Dark backgrounds */
-  --virpal-accent-hover: #312e81;     /* Accent sedikit lebih terang untuk hover */
-  --virpal-accent-active: #3730a3;    /* Accent lebih terang untuk active */
+  --virpal-accent-hover: #312e81; /* Accent sedikit lebih terang untuk hover */
+  --virpal-accent-active: #3730a3; /* Accent lebih terang untuk active */
 
   /* Sidebar specific colors - Dark Mode */
-  --virpal-sidebar-bg: #1e293b;       /* Dark sidebar background */
-  --virpal-sidebar-hover: #334155;    /* Darker gray untuk hover sidebar items */
-  --virpal-sidebar-text: #f1f5f9;     /* Light text color untuk sidebar */
+  --virpal-sidebar-bg: #1e293b; /* Dark sidebar background */
+  --virpal-sidebar-hover: #334155; /* Darker gray untuk hover sidebar items */
+  --virpal-sidebar-text: #f1f5f9; /* Light text color untuk sidebar */
 
   /* Neutral colors - Dark Mode (dibalik) */
   --virpal-neutral-lightest: #0f172a; /* Dark background */
-  --virpal-neutral-lighter: #131d33;  /* Dark secondary background */
-  --virpal-neutral-default: #f1f5f9;  /* Light text */
-  --virpal-neutral-dark: #cbd5e1;     /* Light secondary text */
+  --virpal-neutral-lighter: #131d33; /* Dark secondary background */
+  --virpal-neutral-default: #f1f5f9; /* Light text */
+  --virpal-neutral-dark: #cbd5e1; /* Light secondary text */
 
   /* Main content area backgrounds - Dark Mode */
-  --virpal-main-bg: #0f172a;          /* Dark main background */
-  --virpal-content-bg: #1e293b;       /* Dark content background (cards, inputs, etc) */
-  --virpal-header-bg: #0f172a;        /* Dark header background */
+  --virpal-main-bg: #0f172a; /* Dark main background */
+  --virpal-content-bg: #1e293b; /* Dark content background (cards, inputs, etc) */
+  --virpal-header-bg: #0f172a; /* Dark header background */
 
   /* Status and alert colors - Dark Mode */
-  --virpal-danger: #ef4444;           /* Lighter red for dark mode */
-  --virpal-danger-hover: #f87171;     /* Even lighter red for hover */
-  --virpal-success: #22c55e;          /* Lighter green for dark mode */
-  --virpal-warning: #f59e0b;          /* Lighter orange for dark mode */
+  --virpal-danger: #ef4444; /* Lighter red for dark mode */
+  --virpal-danger-hover: #f87171; /* Even lighter red for hover */
+  --virpal-success: #22c55e; /* Lighter green for dark mode */
+  --virpal-warning: #f59e0b; /* Lighter orange for dark mode */
 }
 
 html {
@@ -102,17 +124,22 @@ body {
 }
 
 /* Global theme transition for all elements - excluding elements that have transform animations */
-*:not([class*="translate"]):not([class*="transition-transform"]):not([style*="transform"]):not(.sidebar-element):not(.history-panel):not(.main-content) {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+*:not([class*='translate']):not([class*='transition-transform']):not(
+    [style*='transform']
+  ):not(.sidebar-element):not(.history-panel):not(.main-content) {
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 /* Specific classes for slide animations - exclude from global transitions */
 .sidebar-element {
-  transition: transform 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease !important;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease,
+    border-color 0.3s ease !important;
 }
 
 .history-panel {
-  transition: transform 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease !important;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease,
+    border-color 0.3s ease !important;
 }
 
 .main-content {
@@ -121,15 +148,18 @@ body {
 
 /* Specific theme transition classes */
 .theme-transition {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, box-shadow 0.3s ease !important;
 }
 
 .theme-transition-fast {
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+  transition: background-color 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease !important;
 }
 
 .theme-transition-slow {
-  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease !important;
+  transition: background-color 0.4s ease, color 0.4s ease,
+    border-color 0.4s ease !important;
 }
 
 /* Gaya untuk tautan */
@@ -243,19 +273,393 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--virpal-neutral-lighter); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-100 */
+  background: var(
+    --virpal-neutral-lighter
+  ); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-100 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--virpal-neutral-dark); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-400 */
+  background: var(
+    --virpal-neutral-dark
+  ); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-400 */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--virpal-neutral-default); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-500 */
+  background: var(
+    --virpal-neutral-default
+  ); /* Atau bisa pakai kelas Tailwind bawaan seperti bg-slate-500 */
 }
 /* Kelas utilitas untuk menggunakan warna VIRPAL */
 /* Contoh penggunaan:
 .bg-virpal-primary { background-color: var(--virpal-primary); }
 .text-virpal-primary { color: var(--virpal-primary); }
 */
+
+/* ==========================================
+   📝 MARKDOWN CONTENT STYLING
+   ========================================== */
+
+/* Base markdown content styling */
+.markdown-content {
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+/* Chat-specific markdown styling (untuk ChatBubble) */
+.markdown-chat {
+  font-size: 0.875rem; /* text-sm */
+}
+
+.markdown-chat h1,
+.markdown-chat h2,
+.markdown-chat h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-chat ul,
+.markdown-chat ol {
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+}
+
+.markdown-chat blockquote {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.markdown-chat pre {
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  background-color: var(--virpal-neutral-lighter);
+  border: 1px solid var(--virpal-neutral-lighter);
+}
+
+.markdown-chat code {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Default markdown styling (untuk content lainnya) */
+.markdown-default {
+  font-size: 1rem;
+}
+
+.markdown-default h1 {
+  font-size: 1.5rem;
+  margin: 1rem 0 0.75rem 0;
+  line-height: 1.3;
+}
+
+.markdown-default h2 {
+  font-size: 1.25rem;
+  margin: 0.875rem 0 0.625rem 0;
+  line-height: 1.4;
+}
+
+.markdown-default h3 {
+  font-size: 1.125rem;
+  margin: 0.75rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.markdown-default ul,
+.markdown-default ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-default blockquote {
+  margin: 1rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.markdown-default pre {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  background-color: var(--virpal-neutral-lighter);
+  border: 1px solid var(--virpal-neutral-lighter);
+}
+
+/* Syntax highlighting support */
+.markdown-content .hljs {
+  background-color: transparent !important;
+  color: var(--virpal-neutral-default);
+}
+
+.markdown-content .hljs-keyword {
+  color: var(--virpal-primary);
+  font-weight: 600;
+}
+
+.markdown-content .hljs-string {
+  color: var(--virpal-secondary);
+}
+
+.markdown-content .hljs-comment {
+  color: var(--virpal-neutral-dark);
+  font-style: italic;
+}
+
+.markdown-content .hljs-number {
+  color: var(--virpal-accent);
+}
+
+.markdown-content .hljs-function {
+  color: var(--virpal-primary);
+}
+
+/* Table styling untuk markdown */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border: 1px solid var(--virpal-neutral-lighter);
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.markdown-content th,
+.markdown-content td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--virpal-neutral-lighter);
+}
+
+.markdown-content th {
+  background-color: var(--virpal-accent);
+  font-weight: 600;
+  color: var(--virpal-primary);
+}
+
+.markdown-content tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-content tr:hover {
+  background-color: var(--virpal-accent);
+}
+
+/* Responsive adjustments untuk markdown */
+@media (max-width: 768px) {
+  .markdown-chat {
+    font-size: 0.8125rem; /* Sedikit lebih kecil di mobile */
+  }
+
+  .markdown-chat ul,
+  .markdown-chat ol {
+    padding-left: 0.75rem;
+  }
+
+  .markdown-chat pre {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .markdown-content .hljs {
+  color: var(--virpal-neutral-default);
+}
+
+[data-theme='dark'] .markdown-content .hljs-keyword {
+  color: var(--virpal-primary);
+}
+
+[data-theme='dark'] .markdown-content .hljs-string {
+  color: var(--virpal-secondary);
+}
+
+[data-theme='dark'] .markdown-content .hljs-comment {
+  color: var(--virpal-neutral-dark);
+}
+
+[data-theme='dark'] .markdown-content .hljs-number {
+  color: var(--virpal-accent);
+}
+
+/* Custom styling untuk task lists (GitHub Flavored Markdown) */
+.markdown-content input[type='checkbox'] {
+  margin-right: 0.5rem;
+  accent-color: var(--virpal-primary);
+}
+
+.markdown-content .task-list-item {
+  list-style: none;
+  margin-left: -1rem;
+}
+
+/* Styling untuk math expressions jika diperlukan di masa depan */
+.markdown-content .math {
+  font-family: 'KaTeX_Main', 'Times New Roman', serif;
+}
+
+.markdown-content .math.inline {
+  display: inline;
+}
+
+.markdown-content .math.display {
+  display: block;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* ==============================================
+   CHAT BUBBLE MARKDOWN STYLING
+   ============================================== */
+
+/* Adjustments khusus untuk markdown dalam chat bubbles */
+.chat-bubble-content {
+  /* Remove default margins untuk tampilan yang lebih compact */
+  line-height: 1.4;
+}
+
+.chat-bubble-content .markdown-content {
+  /* Ensure proper text color inheritance */
+  color: inherit;
+}
+
+.chat-bubble-content .markdown-chat {
+  /* Compact spacing untuk chat bubbles */
+  font-size: 0.875rem; /* text-sm equivalent */
+}
+
+/* Compact headings dalam chat */
+.chat-bubble-content .markdown-chat h1,
+.chat-bubble-content .markdown-chat h2,
+.chat-bubble-content .markdown-chat h3 {
+  margin-bottom: 0.375rem; /* mb-1.5 */
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.chat-bubble-content .markdown-chat h1 {
+  font-size: 1rem; /* Slightly larger */
+  font-weight: 700;
+}
+
+/* Compact paragraphs dalam chat */
+.chat-bubble-content .markdown-chat p {
+  margin-bottom: 0.25rem; /* mb-1 */
+}
+
+.chat-bubble-content .markdown-chat p:last-child {
+  margin-bottom: 0;
+}
+
+/* Compact lists dalam chat */
+.chat-bubble-content .markdown-chat ul,
+.chat-bubble-content .markdown-chat ol {
+  margin: 0.25rem 0; /* my-1 */
+  padding-left: 1rem;
+}
+
+.chat-bubble-content .markdown-chat li {
+  margin-bottom: 0.125rem; /* mb-0.5 */
+  font-size: 0.875rem;
+}
+
+/* Compact code blocks dalam chat */
+.chat-bubble-content .markdown-chat code {
+  font-size: 0.75rem; /* text-xs */
+  padding: 0.125rem 0.25rem; /* px-1 py-0.5 */
+}
+
+.chat-bubble-content .markdown-chat pre {
+  margin: 0.25rem 0; /* my-1 */
+  padding: 0.5rem; /* p-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 0.75rem; /* text-xs */
+}
+
+/* Compact blockquotes dalam chat */
+.chat-bubble-content .markdown-chat blockquote {
+  margin: 0.25rem 0; /* my-1 */
+  padding-left: 0.75rem; /* pl-3 */
+  border-left-width: 2px;
+}
+
+/* Table adjustments untuk chat */
+.chat-bubble-content .markdown-chat table {
+  font-size: 0.75rem; /* text-xs */
+  margin: 0.25rem 0; /* my-1 */
+}
+
+.chat-bubble-content .markdown-chat th,
+.chat-bubble-content .markdown-chat td {
+  padding: 0.25rem 0.5rem; /* px-2 py-1 */
+}
+
+/* Link styling dalam chat bubbles */
+.chat-bubble-content .markdown-chat a {
+  /* Inherit color from parent bubble untuk konsistensi */
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  opacity: 0.9;
+}
+
+.chat-bubble-content .markdown-chat a:hover {
+  opacity: 1;
+  text-decoration-style: solid;
+}
+
+/* User bubble specific adjustments */
+.chat-bubble-content .markdown-chat strong {
+  color: inherit; /* Inherit dari bubble color untuk user messages */
+  font-weight: 600;
+}
+
+.chat-bubble-content .markdown-chat em {
+  color: inherit; /* Inherit dari bubble color untuk user messages */
+  opacity: 0.9;
+}
+
+/* AI bubble adjustments - preserve accent colors */
+.chat-bubble-content:not([style*='background-color: var(--virpal-primary)'])
+  .markdown-chat
+  strong {
+  color: var(--virpal-primary); /* Maintain accent untuk AI messages */
+}
+
+.chat-bubble-content:not([style*='background-color: var(--virpal-primary)'])
+  .markdown-chat
+  em {
+  color: var(--virpal-secondary); /* Maintain accent untuk AI messages */
+}
+
+/* Horizontal rules dalam chat */
+.chat-bubble-content .markdown-chat hr {
+  margin: 0.5rem 0; /* my-2 */
+  opacity: 0.3;
+}
+
+/* Task lists dalam chat bubbles */
+.chat-bubble-content .markdown-chat input[type='checkbox'] {
+  margin-right: 0.375rem; /* mr-1.5 */
+  transform: scale(0.9); /* Slightly smaller checkboxes */
+}
+
+/* Responsive adjustments untuk mobile chat */
+@media (max-width: 640px) {
+  .chat-bubble-content .markdown-chat {
+    font-size: 0.8125rem; /* Slightly smaller on mobile */
+  }
+
+  .chat-bubble-content .markdown-chat code {
+    font-size: 0.6875rem; /* Even smaller code on mobile */
+  }
+
+  .chat-bubble-content .markdown-chat table {
+    font-size: 0.6875rem;
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+}

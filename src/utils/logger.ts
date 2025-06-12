@@ -1,9 +1,28 @@
 /**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+/**
  * Centralized logging utility for VIRPAL application
- * 
+ *
  * This provides a consistent way to handle logging across the application
  * with environment-based log levels to reduce console noise in production.
- * 
+ *
  * Features:
  * - Environment-based log levels
  * - PII sanitization
@@ -38,35 +57,35 @@ class Logger {
     if (typeof process !== 'undefined' && process.env) {
       const nodeEnv = process.env['NODE_ENV'];
       const azureFunctionEnv = process.env['AZURE_FUNCTIONS_ENVIRONMENT'];
-      
+
       // Development environments
-      if (nodeEnv === 'development' || 
+      if (nodeEnv === 'development' ||
           azureFunctionEnv === 'Development' ||
           !nodeEnv || nodeEnv === 'local') {
         return LogLevel.DEBUG;
       }
-      
+
       // Production/staging environments
       return LogLevel.ERROR;
     }
-    
+
     // Check if we're in a browser environment (Vite/frontend)
     // Use globalThis to safely check for browser environment
     try {
       const globalWindow = (globalThis as any).window;
       if (globalWindow && globalWindow.location) {
         // In browser environment, check for development indicators
-        const isDev = globalWindow.location.hostname === 'localhost' || 
+        const isDev = globalWindow.location.hostname === 'localhost' ||
                      globalWindow.location.hostname === '127.0.0.1' ||
                      globalWindow.location.port === '5173' || // Default Vite dev port
                      globalWindow.location.port === '3000';   // Common dev port
-        
+
         return isDev ? LogLevel.DEBUG : LogLevel.ERROR;
       }
     } catch {
       // Browser environment not available
     }
-    
+
     // Fallback to error level for unknown environments
     return LogLevel.ERROR;
   }
@@ -80,26 +99,26 @@ class Logger {
   private shouldSkipLog(message: string): boolean {
     const now = Date.now();
     const entry = this.logHistory.get(message);
-    
+
     if (!entry) {
       this.logHistory.set(message, { message, timestamp: now, count: 1 });
       return false;
     }
-    
+
     // Check if we're within the rate limit window
     if (now - entry.timestamp < this.RATE_LIMIT_WINDOW) {
       entry.count++;
-      
+
       // Skip if we've exceeded the max repetitions
       if (entry.count > this.MAX_REPETITIONS) {
         return true;
       }
-      
+
       // Log rate limit warning on the threshold
       if (entry.count === this.MAX_REPETITIONS) {
         console.warn(`[VIRPAL] Rate limit reached for log: "${message.substring(0, 50)}..." (suppressing further instances)`);
       }
-      
+
       return false;
     } else {
       // Reset the entry for a new window
@@ -233,7 +252,7 @@ class Logger {
    * Log only once per session - useful for configuration logs
    */
   private sessionLogs = new Set<string>();
-  
+
   once(level: 'error' | 'warn' | 'info' | 'debug', message: string, ...args: any[]): void {
     const key = `${level}:${message}`;
     if (!this.sessionLogs.has(key)) {

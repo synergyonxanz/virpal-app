@@ -1,11 +1,30 @@
 /**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+/**
  * MSAL Configuration for Azur// Authority URL για Azure Entra External ID (CIAM)
 // For CIAM, the correct format is: https://yourtenant.ciamlogin.com/yourtenant.onmicrosoft.com/
 const authority = `https://${tenantDomain}/${tenantName}.onmicrosoft.com/`;ntra External ID
- * 
+ *
  * Konfigurasi untuk Azure Microsoft Entra External ID authentication
  * menggunakan Microsoft Authentication Library (MSAL) untuk React
- * 
+ *
  * Best Practices Applied:
  * - Environment-based configuration
  * - Secure token handling
@@ -14,9 +33,9 @@ const authority = `https://${tenantDomain}/${tenantName}.onmicrosoft.com/`;ntra 
  * - Cache optimization
  */
 
+import type { Configuration, PopupRequest, SilentRequest, } from '@azure/msal-browser';
 import { LogLevel } from '@azure/msal-browser';
 import { logger } from '../utils/logger';
-import type { Configuration, PopupRequest, SilentRequest } from '@azure/msal-browser';
 
 // Environment variables dengan fallback values
 const clientId = import.meta.env['VITE_MSAL_CLIENT_ID'] || '';
@@ -26,14 +45,20 @@ const userFlowName = import.meta.env['VITE_USER_FLOW_NAME'] || '';
 const backendScope = import.meta.env['VITE_BACKEND_SCOPE'] || '';
 
 // Validasi environment variables
-if (!clientId || !tenantName || !tenantDomain || !userFlowName || !backendScope) {
+if (
+  !clientId ||
+  !tenantName ||
+  !tenantDomain ||
+  !userFlowName ||
+  !backendScope
+) {
   logger.error('Missing required MSAL environment variables');
   logger.error('Configuration validation failed', {
     hasClientId: !!clientId,
     hasTenantName: !!tenantName,
     hasTenantDomain: !!tenantDomain,
     hasUserFlowName: !!userFlowName,
-    hasBackendScope: !!backendScope
+    hasBackendScope: !!backendScope,
   });
   throw new Error('Missing required MSAL configuration');
 }
@@ -66,10 +91,12 @@ export const msalConfig: Configuration = {
     storeAuthStateInCookie: false, // Set to true for IE11 compatibility
     secureCookies: window.location.protocol === 'https:', // Secure cookies untuk production
     temporaryCacheLocation: 'sessionStorage', // Meningkatkan keamanan untuk temporary cache
-  },  system: {    loggerOptions: {
+  },
+  system: {
+    loggerOptions: {
       loggerCallback: (level, _message, containsPii) => {
         if (containsPii) return; // Skip PII logs completely
-        
+
         // Use centralized logger with secure message handling
         if (level === LogLevel.Error) {
           logger.error('MSAL Error occurred');
@@ -107,10 +134,10 @@ export const loginRequest: PopupRequest = {
   // Add popup window configuration for better CIAM compatibility
   popupWindowAttributes: {
     popupSize: {
-      height: 500, // Adjusted height for better fit
-      width: 596.99999, // Adjusted width for better fit
-    }
-  }
+      height: 600, // Adjusted height for better fit
+      width: 496.99999, // Adjusted width for better fit
+    },
+  },
 };
 
 /**
@@ -172,7 +199,7 @@ export const validateMsalConfig = (): boolean => {
         logger.error(`Missing required MSAL config field: ${key}`);
         return false;
       }
-    }    // Validasi format authority URL untuk CIAM
+    } // Validasi format authority URL untuk CIAM
     const url = new URL(authority);
     if (!url.hostname.includes('.ciamlogin.com')) {
       logger.error('Invalid authority URL format for CIAM');

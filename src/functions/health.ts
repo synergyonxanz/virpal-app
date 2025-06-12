@@ -1,10 +1,29 @@
+/**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
 import { app, HttpRequest, InvocationContext } from '@azure/functions';
 import type { HttpResponseInit } from '@azure/functions';
 
 /**
  * Health check endpoint for monitoring and CI/CD pipeline verification
  * Implements comprehensive health checking following Azure Functions best practices
- * 
+ *
  * @returns System status, configuration, and service connectivity information
  */
 export async function health(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
@@ -35,7 +54,7 @@ export async function health(request: HttpRequest, context: InvocationContext): 
                 external: Math.round(process.memoryUsage().external / 1024 / 1024)
             },
             uptime: Math.round(process.uptime()),
-            loadAverage: process.platform !== 'win32' && 'loadavg' in process ? 
+            loadAverage: process.platform !== 'win32' && 'loadavg' in process ?
                 (process as any).loadavg() : null
         };
 
@@ -108,7 +127,7 @@ export async function health(request: HttpRequest, context: InvocationContext): 
             responseTime,
             requestId: context.invocationId
         });
-        
+
         return {
             status: 503,
             headers: {
@@ -150,9 +169,9 @@ async function checkServiceConnectivity(context: InvocationContext): Promise<{
             checkService('keyVault', async () => {
                 // Simple connectivity check - just validate URL format
                 const url = new URL(process.env['KEY_VAULT_URL']!);
-                return { 
+                return {
                     status: 'configured',
-                    endpoint: url.hostname 
+                    endpoint: url.hostname
                 };
             }, timeout)
         );
@@ -228,20 +247,20 @@ async function checkServiceConnectivity(context: InvocationContext): Promise<{
  * Generic service check with timeout and error handling
  */
 async function checkService(
-    name: string, 
-    checkFn: () => Promise<any>, 
+    name: string,
+    checkFn: () => Promise<any>,
     timeoutMs: number
 ): Promise<{ name: string; result: any }> {
     const startTime = Date.now();
-    
+
     try {
-        const timeoutPromise = new Promise((_, reject) => 
+        const timeoutPromise = new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Timeout')), timeoutMs)
         );
-        
+
         const result = await Promise.race([checkFn(), timeoutPromise]);
         const responseTime = Date.now() - startTime;
-        
+
         return {
             name,
             result: {
@@ -251,7 +270,7 @@ async function checkService(
         };
     } catch (error) {
         const responseTime = Date.now() - startTime;
-        
+
         return {
             name,
             result: {

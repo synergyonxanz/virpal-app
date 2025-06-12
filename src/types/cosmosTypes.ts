@@ -1,11 +1,30 @@
 /**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+/**
  * Azure Cosmos DB Entity Types for VIRPAL Application
  *  * Defines the data structures for all containers in the virpal-db database:
  * - users: User profiles and authentication data (partition key: /id, unique key: /email)
  * - conversations: Chat sessions and metadata (partition key: /userId)
  * - messages: Individual chat messages within conversations (partition key: /conversationId)
  * - analytics: Usage analytics and metrics data (partition key: /date)
- * 
+ *
  * Best Practices Applied:
  * - Strong typing for all entities
  * - Consistent naming conventions
@@ -194,23 +213,23 @@ export interface ContainerConfig {
  * Type guards for entity validation
  */
 export const isUserEntity = (obj: any): obj is UserEntity => {
-  return obj && typeof obj.id === 'string' && typeof obj.email === 'string' && 
+  return obj && typeof obj.id === 'string' && typeof obj.email === 'string' &&
          typeof obj.displayName === 'string' && ['free', 'premium', 'elite'].includes(obj.subscriptionTier);
 };
 
 export const isConversationEntity = (obj: any): obj is ConversationEntity => {
-  return obj && typeof obj.id === 'string' && typeof obj.userId === 'string' && 
+  return obj && typeof obj.id === 'string' && typeof obj.userId === 'string' &&
          typeof obj.title === 'string' && typeof obj.messageCount === 'number';
 };
 
 export const isMessageEntity = (obj: any): obj is MessageEntity => {
-  return obj && typeof obj.id === 'string' && typeof obj.conversationId === 'string' && 
+  return obj && typeof obj.id === 'string' && typeof obj.conversationId === 'string' &&
          ['user', 'assistant'].includes(obj.sender) && typeof obj.text === 'string';
 };
 
 export const isAnalyticsEntity = (obj: any): obj is AnalyticsEntity => {
-  return obj && typeof obj.id === 'string' && typeof obj.date === 'string' && 
-         typeof obj.userId === 'string' && 
+  return obj && typeof obj.id === 'string' && typeof obj.date === 'string' &&
+         typeof obj.userId === 'string' &&
          ['usage', 'performance', 'engagement', 'error', 'feedback'].includes(obj.metricType) &&
          Array.isArray(obj.metrics);
 };

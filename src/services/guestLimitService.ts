@@ -1,6 +1,25 @@
 /**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
+/**
  * Guest Limit Service
- * 
+ *
  * Mengelola batasan untuk pengguna yang belum login (guest users)
  * - Maksimal 5 pesan chat
  * - Tidak ada akses TTS
@@ -31,9 +50,9 @@ class GuestLimitService {
       }
 
       const limits: GuestLimits = JSON.parse(stored);
-      
+
       // Reset jika sudah lebih dari 24 jam
-      if (limits.firstChatTimestamp && 
+      if (limits.firstChatTimestamp &&
           Date.now() - limits.firstChatTimestamp > this.RESET_PERIOD) {
         logger.info('Guest limits reset after 24 hours');
         return this.createDefaultLimits();
@@ -56,7 +75,7 @@ class GuestLimitService {
       firstChatTimestamp: null,
       canUseTTS: false
     };
-    
+
     this.saveLimits(limits);
     return limits;
   }
@@ -85,15 +104,15 @@ class GuestLimitService {
    */
   incrementMessageCount(): void {
     const limits = this.getGuestLimits();
-    
+
     // Set timestamp pertama kali chat jika belum ada
     if (limits.firstChatTimestamp === null) {
       limits.firstChatTimestamp = Date.now();
     }
-    
+
     limits.currentChatCount++;
     this.saveLimits(limits);
-    
+
     logger.info(`Guest message count incremented to ${limits.currentChatCount}/${limits.maxChatMessages}`);
   }
 
@@ -125,7 +144,7 @@ class GuestLimitService {
    */
   getLimitMessage(): string {
     const remaining = this.getRemainingMessages();
-    
+
     if (remaining > 0) {
       return `Anda memiliki ${remaining} pesan tersisa. Login untuk chat tanpa batas dan menggunakan fitur Text-to-Speech.`;
     } else {
@@ -138,13 +157,13 @@ class GuestLimitService {
    */
   getWarningMessage(): string | null {
     const remaining = this.getRemainingMessages();
-    
+
     if (remaining === 2) {
       return 'Anda memiliki 2 pesan tersisa. Pertimbangkan untuk login agar bisa chat tanpa batas.';
     } else if (remaining === 1) {
       return 'Ini adalah pesan terakhir Anda hari ini. Login untuk melanjutkan chat.';
     }
-    
+
     return null;
   }
 }

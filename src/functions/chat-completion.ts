@@ -1,3 +1,22 @@
+/**
+ * VirPal App - AI Assistant with Azure Functions
+ * Copyright (c) 2025 Achmad Reihan Alfaiz. All rights reserved.
+ *
+ * This file is part of VirPal App, a proprietary software application.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This source code is the exclusive property of Achmad Reihan Alfaiz.
+ * No part of this software may be reproduced, distributed, or transmitted
+ * in any form or by any means, including photocopying, recording, or other
+ * electronic or mechanical methods, without the prior written permission
+ * of the copyright holder, except in the case of brief quotations embodied
+ * in critical reviews and certain other noncommercial uses permitted by
+ * copyright law.
+ *
+ * For licensing inquiries: reihan3000@gmail.com
+ */
+
 import { app } from "@azure/functions";
 import type { HttpRequest, InvocationContext, HttpResponseInit } from "@azure/functions";
 import { keyVaultService } from '../services/azureKeyVaultService.js';
@@ -51,31 +70,31 @@ function validateRequest(requestData: ChatCompletionRequest): { isValid: boolean
     if (!requestData?.userInput) {
         return { isValid: false, error: 'userInput is required' };
     }
-    
+
     if (typeof requestData.userInput !== 'string') {
         return { isValid: false, error: 'userInput must be a string' };
     }
-    
+
     // Security: Prevent overly long inputs
     if (requestData.userInput.length > 4000) {
         return { isValid: false, error: 'userInput exceeds maximum length of 4000 characters' };
     }
-    
+
     // Memory management: Limit message history
     if (requestData.messageHistory && requestData.messageHistory.length > 20) {
         return { isValid: false, error: 'messageHistory exceeds maximum length of 20 messages' };
     }
-    
+
     // Validate temperature range
     if (requestData.temperature !== undefined && (requestData.temperature < 0 || requestData.temperature > 2)) {
         return { isValid: false, error: 'temperature must be between 0 and 2' };
     }
-    
+
     // Validate token limits
     if (requestData.maxTokens !== undefined && (requestData.maxTokens < 1 || requestData.maxTokens > 4000)) {
         return { isValid: false, error: 'maxTokens must be between 1 and 4000' };
     }
-    
+
     return { isValid: true };
 }
 
@@ -84,7 +103,7 @@ function validateRequest(requestData: ChatCompletionRequest): { isValid: boolean
  * Returns user information if authentication is successful
  */
 async function validateAuthentication(
-    request: HttpRequest, 
+    request: HttpRequest,
     context: InvocationContext
 ): Promise<{ isAuthenticated: boolean; user?: any; error?: string }> {
     try {
@@ -92,7 +111,7 @@ async function validateAuthentication(
         const isDevMode = process.env['NODE_ENV'] === 'development';
         const host = request.headers.get('host') || '';
         const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
-        
+
         if (isDevMode && isLocalhost) {
             return {
                 isAuthenticated: true,
@@ -104,48 +123,48 @@ async function validateAuthentication(
                 }
             };
         }
-        
+
         // Extract Authorization header
         const authHeader = request.headers.get('authorization');
-        
+
         if (!authHeader) {
-            return { 
-                isAuthenticated: false, 
-                error: 'Authorization header is required' 
+            return {
+                isAuthenticated: false,
+                error: 'Authorization header is required'
             };
         }
-        
+
         // Check Bearer token format
         const tokenMatch = authHeader.match(/^Bearer\s+(.+)$/i);
         if (!tokenMatch) {
-            return { 
-                isAuthenticated: false, 
-                error: 'Invalid authorization header format. Expected: Bearer <token>' 
+            return {
+                isAuthenticated: false,
+                error: 'Invalid authorization header format. Expected: Bearer <token>'
             };
         }
-        
+
         const token = tokenMatch[1];
-        
+
         // Validasi token tidak kosong
         if (!token || token.trim() === '') {
-            return { 
-                isAuthenticated: false, 
-                error: 'Token cannot be empty' 
+            return {
+                isAuthenticated: false,
+                error: 'Token cannot be empty'
             };
         }
-        
+
         // Validate JWT token
         const jwtValidationService = getJWTService();
         const validationResult = await jwtValidationService.validateToken(token, context);
-        
+
         if (!validationResult.isValid) {
-            return { 
-                isAuthenticated: false, 
-                error: validationResult.error || 'Invalid token' 
+            return {
+                isAuthenticated: false,
+                error: validationResult.error || 'Invalid token'
             };
         }        // Extract user information
         const userInfo = jwtValidationService.extractUserInfo(validationResult.claims!);
-        
+
         return {
             isAuthenticated: true,
             user: {
@@ -155,12 +174,12 @@ async function validateAuthentication(
                 scopes: validationResult.scopes || []
             }
         };
-        
+
     } catch (error) {
         context.error('Authentication validation error:', error instanceof Error ? error.message : 'Unknown error');
-        return { 
-            isAuthenticated: false, 
-            error: 'Authentication validation failed' 
+        return {
+            isAuthenticated: false,
+            error: 'Authentication validation failed'
         };
     }
 }
@@ -189,21 +208,21 @@ async function getConfiguration(context: InvocationContext): Promise<{
             context.error('Key Vault service not available');
             return null;
         }
-        
+
         // Parallel execution for better performance
         const [endpoint, deploymentName, apiVersion, apiKey] = await Promise.all([
             keyVaultService.getSecret('azure-openai-endpoint'),
-            keyVaultService.getSecret('azure-openai-deployment-name'), 
+            keyVaultService.getSecret('azure-openai-deployment-name'),
             keyVaultService.getSecret('azure-openai-api-version'),
             keyVaultService.getSecret('azure-openai-key')
         ]);
-        
+
         // Validate all required configuration is present
         if (!endpoint || !apiKey || !deploymentName || !apiVersion) {
             context.error('Missing required configuration values');
             return null;
         }
-        
+
         // Update cache with new configuration
         configCache = {
             endpoint,
@@ -212,7 +231,7 @@ async function getConfiguration(context: InvocationContext): Promise<{
             apiVersion,
             timestamp: now
         };
-        
+
         return {
             endpoint,
             apiKey,
@@ -233,33 +252,33 @@ async function retryRequest<T>(
     baseDelay: number = 300
 ): Promise<T> {
     let lastError: Error;
-    
+
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
             return await operation();
         } catch (error) {
             lastError = error as Error;
-            
+
             // Don't retry on client errors (4xx) - they won't succeed on retry
             if (error instanceof Error && error.message.includes('4')) {
                 throw error;
             }
-            
+
             if (attempt === maxRetries) {
                 break;
             }
-            
+
             // Exponential backoff with jitter
             const delay = baseDelay * Math.pow(2, attempt - 1) + Math.random() * 100;
             await new Promise(resolve => setTimeout(resolve, delay));
-            
+
             // Only log on final retry attempt
             if (attempt === maxRetries - 1) {
                 context.warn(`Retrying request (attempt ${attempt + 1}/${maxRetries})`);
             }
         }
     }
-    
+
     throw lastError!;
 }
 
@@ -289,7 +308,7 @@ const getCorsHeaders = () => ({
 export async function chatCompletionHandler(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const startTime = Date.now();
     const requestId = Math.random().toString(36).substring(7);
-    
+
     context.info(`Chat completion request: ${request.method} ${requestId}`);
 
     // Handle CORS preflight requests
@@ -306,9 +325,9 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
         return {
             status: 405,
             headers: getCorsHeaders(),
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 error: 'Method not allowed. Use POST.',
-                requestId 
+                requestId
             })
         };
     }    // Check if this is a guest mode request
@@ -329,14 +348,14 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
             return {
                 status: 401,
                 headers: getCorsHeaders(),
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     error: 'Authentication required',
                     details: authResult.error,
-                    requestId 
+                    requestId
                 })
             };
         }
-        
+
         userInfo = authResult.user;
     }
 
@@ -348,22 +367,22 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
             return {
                 status: 400,
                 headers: getCorsHeaders(),
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     error: 'Invalid JSON in request body',
-                    requestId 
+                    requestId
                 })
             };
         }
-        
+
         // Comprehensive input validation
         const validation = validateRequest(requestData);
         if (!validation.isValid) {
             return {
                 status: 400,
                 headers: getCorsHeaders(),
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     error: validation.error,
-                    requestId 
+                    requestId
                 })
             };
         }
@@ -374,7 +393,7 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
             return {
                 status: 500,
                 headers: getCorsHeaders(),
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     error: 'Configuration error: Unable to retrieve Azure OpenAI configuration',
                     details: 'Please ensure Key Vault is properly configured and accessible',
                     requestId
@@ -384,7 +403,7 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
 
         // Build messages array with memory management
         const messages: OpenAIChatMessage[] = [];
-        
+
         // Add system prompt if provided
         if (requestData.systemPrompt?.trim()) {
             messages.push({
@@ -400,7 +419,7 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
                 .filter(msg => msg.content?.trim()); // Remove empty messages
             messages.push(...limitedHistory);
         }
-        
+
         // Add current user input
         messages.push({
             role: 'user',
@@ -437,12 +456,12 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
         }, context);
 
         const data = await openAIResponse.json() as AzureOpenAIResponse;
-        
+
         // Robust response validation
         if (data?.choices?.[0]?.message?.content) {
             const duration = Date.now() - startTime;
             context.info(`Chat completion successful: ${duration}ms`);
-            
+
             return {
                 status: 200,
                 headers: getCorsHeaders(),
@@ -472,16 +491,16 @@ export async function chatCompletionHandler(request: HttpRequest, context: Invoc
         }    } catch (error) {
         const duration = Date.now() - startTime;
         context.error(`Chat completion failed (${duration}ms):`, error instanceof Error ? error.message : 'Unknown error');
-        
+
         // Return appropriate error based on error type
         const isTimeoutError = error instanceof Error && error.message.includes('timeout');
         const isRateLimitError = error instanceof Error && error.message.includes('429');
-        
+
         return {
             status: isTimeoutError ? 504 : isRateLimitError ? 429 : 500,
             headers: getCorsHeaders(),
             body: JSON.stringify({
-                error: isTimeoutError ? 'Request timeout' : 
+                error: isTimeoutError ? 'Request timeout' :
                        isRateLimitError ? 'Rate limit exceeded' : 'Internal server error',
                 details: error instanceof Error ? error.message : 'Unknown error occurred',
                 requestId
