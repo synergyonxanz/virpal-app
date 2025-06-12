@@ -321,7 +321,16 @@ a {
 .markdown-chat ul,
 .markdown-chat ol {
   margin: 0.5rem 0;
-  padding-left: 1rem;
+  padding-left: 1.5rem; /* Increased padding for better alignment */
+  list-style-position: outside; /* Ensure markers are outside content */
+}
+
+/* Specific styling for list items in chat to prevent newline issues */
+.markdown-chat li {
+  display: list-item;
+  list-style-position: outside;
+  margin-left: 0;
+  padding-left: 0.25rem; /* Small padding for better spacing */
 }
 
 .markdown-chat blockquote {
@@ -454,7 +463,11 @@ a {
 
   .markdown-chat ul,
   .markdown-chat ol {
-    padding-left: 0.75rem;
+    padding-left: 1.25rem; /* Reduced padding on mobile */
+  }
+
+  .markdown-chat li {
+    padding-left: 0.125rem; /* Reduced padding on mobile */
   }
 
   .markdown-chat pre {
@@ -661,5 +674,1139 @@ a {
     overflow-x: auto;
     display: block;
     white-space: nowrap;
+  }
+}
+
+/* === AVATAR RESPONSIVE FIXES === */
+/* Make avatar smaller on mobile to save space for chat content */
+@media (max-width: 640px) {
+  /* Target avatar container specifically for mobile chat */
+  .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.5rem !important; /* Reduce margin */
+  }
+
+  /* Target the avatar div with rounded-full class */
+  .md\\:hidden .flex-shrink-0 .rounded-full {
+    width: 2rem !important; /* 32px instead of default w-20 (80px) */
+    height: 2rem !important; /* 32px instead of default h-20 (80px) */
+    min-width: 2rem !important;
+    min-height: 2rem !important;
+    border-width: 2px !important; /* Reduce border thickness */
+  }
+
+  /* Target the image inside avatar */
+  .md\\:hidden .flex-shrink-0 .rounded-full img {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Chat message container adjustments */
+  .flex.items-start.gap-3 {
+    gap: 0.5rem !important; /* Reduce gap between avatar and message */
+  }
+}
+
+@media (max-width: 425px) {
+  /* Extra small avatar for very small screens */
+  .md\\:hidden .flex-shrink-0 .rounded-full {
+    width: 1.75rem !important; /* 28px for ultra compact */
+    height: 1.75rem !important; /* 28px for ultra compact */
+    min-width: 1.75rem !important;
+    min-height: 1.75rem !important;
+    border-width: 1px !important; /* Even thinner border */
+  }
+
+  /* Further reduce spacing */
+  .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.375rem !important; /* Even smaller margin */
+  }
+
+  .flex.items-start.gap-3 {
+    gap: 0.375rem !important; /* Minimal gap */
+  }
+}
+
+@media (max-width: 375px) {
+  /* Ultra compact avatar for very small phones */
+  .md\\:hidden .flex-shrink-0 .rounded-full {
+    width: 1.5rem !important; /* 24px - very compact */
+    height: 1.5rem !important; /* 24px - very compact */
+    min-width: 1.5rem !important;
+    min-height: 1.5rem !important;
+    border-width: 1px !important; /* Minimal border */
+  }
+
+  /* Minimal spacing for ultra small screens */
+  .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.25rem !important; /* Minimal margin */
+  }
+
+  .flex.items-start.gap-3 {
+    gap: 0.25rem !important; /* Ultra minimal gap */
+  }
+}
+
+/* === ADDITIONAL AVATAR MOBILE FIXES === */
+/* Ultra specific rules to ensure avatar sizing works regardless of screen height */
+
+/* Force avatar sizing on ALL mobile widths */
+@media (max-width: 640px) and (max-height: 1024px) {
+  /* Target chat avatar containers with maximum specificity */
+  [data-section='chat-bubble-area']
+    .flex.items-start.gap-3
+    .md\\:hidden
+    .flex-shrink-0
+    .rounded-full,
+  .flex.items-start .md\\:hidden .flex-shrink-0 .rounded-full,
+  .md\\:hidden .flex-shrink-0 .w-20.h-20.rounded-full,
+  .md\\:hidden .flex-shrink-0 .rounded-full.overflow-hidden {
+    width: 2rem !important; /* 32px */
+    height: 2rem !important; /* 32px */
+    min-width: 2rem !important;
+    min-height: 2rem !important;
+    max-width: 2rem !important;
+    max-height: 2rem !important;
+    border-width: 2px !important;
+  }
+
+  /* Target the image inside with maximum specificity */
+  [data-section='chat-bubble-area']
+    .flex.items-start.gap-3
+    .md\\:hidden
+    .flex-shrink-0
+    .rounded-full
+    img,
+  .flex.items-start .md\\:hidden .flex-shrink-0 .rounded-full img,
+  .md\\:hidden .flex-shrink-0 .w-20.h-20.rounded-full img,
+  .md\\:hidden .flex-shrink-0 .rounded-full.overflow-hidden img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  /* Container spacing adjustments */
+  [data-section='chat-bubble-area']
+    .flex.items-start.gap-3
+    .md\\:hidden
+    .flex-shrink-0,
+  .flex.items-start .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.5rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Gap adjustments */
+  [data-section='chat-bubble-area'] .flex.items-start.gap-3,
+  .flex.items-start.gap-3 {
+    gap: 0.5rem !important;
+  }
+}
+
+@media (max-width: 425px) and (max-height: 1024px) {
+  /* Even smaller for very small screens */
+  [data-section='chat-bubble-area']
+    .flex.items-start.gap-3
+    .md\\:hidden
+    .flex-shrink-0
+    .rounded-full,
+  .flex.items-start .md\\:hidden .flex-shrink-0 .rounded-full,
+  .md\\:hidden .flex-shrink-0 .w-20.h-20.rounded-full,
+  .md\\:hidden .flex-shrink-0 .rounded-full.overflow-hidden {
+    width: 1.75rem !important; /* 28px */
+    height: 1.75rem !important; /* 28px */
+    min-width: 1.75rem !important;
+    min-height: 1.75rem !important;
+    max-width: 1.75rem !important;
+    max-height: 1.75rem !important;
+    border-width: 1px !important;
+  }
+
+  [data-section='chat-bubble-area']
+    .flex.items-start.gap-3
+    .md\\:hidden
+    .flex-shrink-0,
+  .flex.items-start .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.375rem !important;
+  }
+
+  [data-section='chat-bubble-area'] .flex.items-start.gap-3,
+  .flex.items-start.gap-3 {
+    gap: 0.375rem !important;
+  }
+}
+
+@media (max-width: 375px) and (max-height: 1024px) {
+  /* Ultra compact for smallest screens */
+  [data-section='chat-bubble-area']
+    .flex.items-start.gap-3
+    .md\\:hidden
+    .flex-shrink-0
+    .rounded-full,
+  .flex.items-start .md\\:hidden .flex-shrink-0 .rounded-full,
+  .md\\:hidden .flex-shrink-0 .w-20.h-20.rounded-full,
+  .md\\:hidden .flex-shrink-0 .rounded-full.overflow-hidden {
+    width: 1.5rem !important; /* 24px */
+    height: 1.5rem !important; /* 24px */
+    min-width: 1.5rem !important;
+    min-height: 1.5rem !important;
+    max-width: 1.5rem !important;
+    max-height: 1.5rem !important;
+    border-width: 1px !important;
+  }
+
+  [data-section='chat-bubble-area']
+    .flex.items-start.gap-3
+    .md\\:hidden
+    .flex-shrink-0,
+  .flex.items-start .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.25rem !important;
+  }
+
+  [data-section='chat-bubble-area'] .flex.items-start.gap-3,
+  .flex.items-start.gap-3 {
+    gap: 0.25rem !important;
+  }
+}
+
+/* Override any conflicting Tailwind classes */
+@media (max-width: 640px) {
+  .md\\:hidden .w-20 {
+    width: 2rem !important;
+  }
+
+  .md\\:hidden .h-20 {
+    height: 2rem !important;
+  }
+}
+
+@media (max-width: 425px) {
+  .md\\:hidden .w-20 {
+    width: 1.75rem !important;
+  }
+
+  .md\\:hidden .h-20 {
+    height: 1.75rem !important;
+  }
+}
+
+@media (max-width: 375px) {
+  .md\\:hidden .w-20 {
+    width: 1.5rem !important;
+  }
+
+  .md\\:hidden .h-20 {
+    height: 1.5rem !important;
+  }
+}
+
+/* Custom Responsive Breakpoints and Header Optimizations */
+@layer utilities {
+  /* Extra small devices (phones, 425px and down) */
+  @media (max-width: 425px) {
+    .text-xs-mobile {
+      font-size: 0.625rem; /* 10px */
+      line-height: 0.875rem; /* 14px */
+    }
+
+    .text-sm-mobile {
+      font-size: 0.75rem; /* 12px */
+      line-height: 1rem; /* 16px */
+    }
+
+    .text-base-mobile {
+      font-size: 0.8125rem; /* 13px */
+      line-height: 1.125rem; /* 18px */
+    }
+
+    .gap-1-mobile {
+      gap: 0.125rem; /* 2px */
+    }
+
+    .gap-2-mobile {
+      gap: 0.375rem; /* 6px */
+    }
+
+    .px-3-mobile {
+      padding-left: 0.75rem; /* 12px */
+      padding-right: 0.75rem; /* 12px */
+    }
+
+    .py-2-mobile {
+      padding-top: 0.5rem; /* 8px */
+      padding-bottom: 0.5rem; /* 8px */
+    }
+  }
+
+  /* Small devices (tablets, 512px and down) */
+  @media (max-width: 512px) {
+    .header-mobile-layout {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem; /* 12px */
+    }
+
+    .title-mobile-order {
+      order: 1;
+      width: 100%;
+    }
+
+    .controls-mobile-order {
+      order: 2;
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+}
+
+/* Header Responsive Enhancements */
+@media (max-width: 512px) {
+  [data-section='header'] {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Center title section on mobile */
+  [data-section='header'] > div:first-child {
+    width: 100% !important;
+    order: 1;
+    justify-content: center !important;
+  }
+
+  /* Center controls section on mobile */
+  [data-section='header'] > div:last-child {
+    width: 100% !important;
+    order: 2;
+    justify-content: center !important;
+  }
+
+  [data-section='header'] > div:last-child > div {
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Add proper spacing for sidebar button on mobile */
+  [data-section='header'] > div:first-child > div {
+    justify-content: center !important;
+    gap: 0.75rem !important; /* Better spacing between button and title */
+  }
+}
+
+@media (max-width: 425px) {
+  /* Further reduce spacing and font sizes for very small screens */
+  [data-section='header'] {
+    padding: 0.75rem 1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Title responsive adjustments - Only for very small screens */
+  [data-section='header'] span.font-bold {
+    font-size: 0.875rem !important; /* 14px */
+    line-height: 1.25rem !important; /* 20px */
+  }
+
+  /* Tagline responsive adjustments */
+  [data-section='header'] span.text-xs {
+    font-size: 0.75rem !important; /* 12px */
+    line-height: 1rem !important; /* 16px */
+  }
+
+  /* Controls gap reduction */
+  [data-section='header'] > div:last-child > div {
+    gap: 0.375rem !important;
+  }
+
+  /* Tighter spacing for very small screens */
+  [data-section='header'] > div:first-child > div {
+    gap: 0.5rem !important;
+  }
+}
+
+/* Extended Typography Utilities */
+.text-2xs {
+  font-size: 0.625rem; /* 10px */
+  line-height: 0.875rem; /* 14px */
+}
+
+/* Extended Responsive Utilities */
+.xs\:text-2xs {
+  font-size: 0.625rem; /* 10px */
+  line-height: 0.875rem; /* 14px */
+}
+
+@media (min-width: 475px) {
+  .xs\:text-xs {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1rem; /* 16px */
+  }
+
+  .xs\:text-sm {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
+  }
+}
+
+/* === MOBILE RESPONSIVE TYPOGRAPHY AND COMPONENT FIXES === */
+/* Comprehensive mobile typography that works properly */
+
+/* Mobile responsive adjustments for all main content components */
+@media (max-width: 640px) {
+  /* Universal mobile typography for main content areas */
+  [data-section='main-content-area'] h1 {
+    font-size: 1.25rem !important; /* text-xl instead of larger */
+    line-height: 1.75rem !important;
+  }
+
+  [data-section='main-content-area'] h2 {
+    font-size: 1.125rem !important; /* text-lg instead of text-2xl */
+    line-height: 1.75rem !important;
+  }
+
+  [data-section='main-content-area'] h3 {
+    font-size: 1rem !important; /* text-base instead of text-xl */
+    line-height: 1.5rem !important;
+  }
+
+  [data-section='main-content-area'] h4 {
+    font-size: 0.875rem !important; /* text-sm instead of text-lg */
+    line-height: 1.25rem !important;
+  }
+
+  [data-section='main-content-area'] p,
+  [data-section='main-content-area']
+    div:not(.text-2xl):not(.text-xl):not(.text-lg),
+  [data-section='main-content-area']
+    span:not(.text-2xl):not(.text-xl):not(.text-lg),
+  [data-section='main-content-area'] label {
+    font-size: 0.875rem !important; /* text-sm for better mobile readability */
+    line-height: 1.25rem !important;
+  }
+
+  [data-section='main-content-area'] button {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  [data-section='main-content-area'] input[type='range'] + div {
+    font-size: 0.75rem !important; /* text-xs for range labels */
+  }
+
+  /* Specific for mood selection buttons */
+  [data-section='main-content-area'] .grid-cols-5 button {
+    padding: 0.5rem !important;
+  }
+
+  [data-section='main-content-area'] .grid-cols-5 button .text-2xl {
+    font-size: 1.25rem !important; /* Smaller emoji */
+  }
+
+  [data-section='main-content-area'] .grid-cols-5 button .text-xs {
+    font-size: 0.625rem !important; /* Even smaller label */
+  }
+}
+
+/* === MOBILE COMPONENT-SPECIFIC FIXES === */
+@media (max-width: 425px) {
+  /* More aggressive typography reductions for very small screens */
+
+  /* Main content container adjustments */
+  .max-w-4xl {
+    padding: 0.75rem !important; /* Reduce padding */
+    margin: 0 0.25rem !important; /* Reduce margin */
+  }
+
+  /* Mood Tracker Component Responsive Fixes */
+  .mood-tracker-container h2 {
+    font-size: 0.875rem !important; /* Very small */
+    margin-bottom: 0.5rem !important;
+  }
+
+  .mood-tracker-container h3 {
+    font-size: 0.8rem !important; /* Very small */
+    margin-bottom: 0.5rem !important;
+  }
+
+  .mood-tracker-container h4 {
+    font-size: 0.75rem !important; /* Extra small */
+  }
+
+  .mood-tracker-container p,
+  .mood-tracker-container div:not(.text-2xl):not(.mood-option-emoji),
+  .mood-tracker-container span:not(.text-2xl):not(.mood-option-emoji),
+  .mood-tracker-container label {
+    font-size: 0.75rem !important; /* Small text for mobile */
+    line-height: 1.125rem !important;
+  }
+
+  .mood-tracker-container .mood-option-button {
+    padding: 0.375rem !important; /* Reduce padding */
+  }
+
+  .mood-tracker-container .mood-option-button .text-2xl {
+    font-size: 1.125rem !important; /* Smaller emoji */
+  }
+
+  .mood-tracker-container .mood-option-button .text-xs {
+    font-size: 0.625rem !important; /* Very small text */
+  }
+
+  /* Risk Assessment Component Responsive Fixes */
+  .risk-assessment-container h2 {
+    font-size: 0.875rem !important; /* Very small */
+    margin-bottom: 0.5rem !important;
+  }
+
+  .risk-assessment-container h3 {
+    font-size: 0.8rem !important; /* Very small */
+    margin-bottom: 0.5rem !important;
+  }
+
+  .risk-assessment-container h4 {
+    font-size: 0.75rem !important; /* Extra small */
+  }
+
+  .risk-assessment-container p,
+  .risk-assessment-container div:not(.navigation-buttons),
+  .risk-assessment-container span,
+  .risk-assessment-container label {
+    font-size: 0.75rem !important; /* Small text for mobile */
+    line-height: 1.125rem !important;
+  }
+
+  /* Navigation Button Container Fix for Overflow */
+  .risk-assessment-navigation {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    margin-top: 1.5rem !important;
+    width: 100% !important;
+  }
+
+  .risk-assessment-navigation button {
+    width: 100% !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.75rem !important; /* Smaller button text */
+    min-height: 2.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Step Progress Indicators */
+  .risk-assessment-steps .w-8 {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    font-size: 0.6875rem !important;
+  }
+
+  /* Form Controls Mobile Sizing */
+  .risk-assessment-container input[type='number'],
+  .risk-assessment-container input[type='range'] {
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  /* Grid Layout Fixes for Mobile */
+  .risk-assessment-container .grid.md\\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  .risk-assessment-container .grid.grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.375rem !important;
+  }
+
+  .risk-assessment-container .grid.md\\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Content Spacing Adjustments */
+  .risk-assessment-container .space-y-6 > * + * {
+    margin-top: 0.75rem !important; /* Reduce spacing */
+  }
+
+  .risk-assessment-container .space-y-4 > * + * {
+    margin-top: 0.5rem !important; /* Reduce spacing */
+  }
+
+  .risk-assessment-container .space-y-3 > * + * {
+    margin-top: 0.375rem !important; /* Reduce spacing */
+  }
+
+  /* Universal text size adjustments - More aggressive reduction */
+  .text-sm {
+    font-size: 0.75rem !important; /* Smaller than default */
+  }
+
+  .text-xs {
+    font-size: 0.6875rem !important; /* Much smaller */
+  }
+
+  .text-base {
+    font-size: 0.8125rem !important; /* Smaller base text */
+  }
+
+  .text-lg {
+    font-size: 0.875rem !important; /* Much smaller lg text */
+  }
+
+  .text-xl {
+    font-size: 1rem !important; /* Much smaller xl text */
+  }
+
+  .text-2xl {
+    font-size: 1.125rem !important; /* Much smaller 2xl text */
+  }
+
+  /* Button and input improvements */
+  button {
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 0.75rem !important;
+    padding: 0.5rem !important;
+  }
+
+  /* Card padding reduction */
+  .rounded-lg.shadow-md {
+    padding: 0.75rem !important;
+  }
+
+  /* Spacing adjustments */
+  .mb-6 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .mb-3 {
+    margin-bottom: 0.375rem !important;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.25rem !important;
+  }
+}
+
+/* === ENHANCED MOBILE EMOJI AND BUTTON FIXES === */
+/* Ultra-specific mobile responsive fixes for emoji and buttons */
+
+@media (max-width: 425px) {
+  /* === MOOD TRACKER MOBILE FIXES === */
+
+  /* Mood selection grid buttons - make emoji and text much smaller */
+  .mood-tracker-container .grid.grid-cols-5 button {
+    padding: 0.25rem !important; /* Much smaller padding */
+    min-height: auto !important;
+  }
+
+  .mood-tracker-container .grid.grid-cols-5 button .text-2xl,
+  .mood-tracker-container .grid-cols-5 button .text-2xl,
+  .mood-tracker-container button .text-2xl {
+    font-size: 1rem !important; /* Much smaller emoji - 16px */
+    line-height: 1.25rem !important;
+    margin-bottom: 0.125rem !important; /* Reduce spacing */
+  }
+
+  .mood-tracker-container .grid.grid-cols-5 button .text-xs,
+  .mood-tracker-container .grid-cols-5 button .text-xs,
+  .mood-tracker-container button .text-xs {
+    font-size: 0.5rem !important; /* Very small label - 8px */
+    line-height: 0.75rem !important;
+  }
+
+  /* History display emoji fix */
+  .mood-tracker-container .space-y-3 .text-2xl,
+  .mood-tracker-container [class*='space-y'] .text-2xl {
+    font-size: 1rem !important; /* Smaller history emoji */
+  }
+
+  /* Trigger and activity buttons */
+  .mood-tracker-container .flex.flex-wrap button,
+  .mood-tracker-container .flex-wrap button {
+    font-size: 0.625rem !important; /* Very small text - 10px */
+    padding: 0.25rem 0.5rem !important; /* Smaller padding */
+    line-height: 1rem !important;
+  }
+
+  /* === RISK ASSESSMENT MOBILE FIXES === */
+
+  /* All emoji in risk assessment */
+  .risk-assessment-container .text-xl,
+  .risk-assessment-container h3 .text-xl,
+  .risk-assessment-container h4 .text-xl {
+    font-size: 0.875rem !important; /* Much smaller emoji in headings */
+  }
+
+  /* Frequency option buttons */
+  .risk-assessment-container .space-y-3 label {
+    padding: 0.5rem !important; /* Reduce padding */
+    font-size: 0.6875rem !important; /* Small text - 11px */
+  }
+
+  /* Form input labels */
+  .risk-assessment-container label .text-sm,
+  .risk-assessment-container .text-sm {
+    font-size: 0.625rem !important; /* Very small - 10px */
+  }
+
+  /* Checkbox and radio button areas */
+  .risk-assessment-container .grid.md\\:grid-cols-2 label,
+  .risk-assessment-container .grid label {
+    font-size: 0.625rem !important; /* Very small text */
+    padding: 0.375rem !important; /* Smaller padding */
+  }
+
+  /* Step indicators */
+  .risk-assessment-container .flex.justify-center .w-8 {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    font-size: 0.5rem !important; /* Very small step numbers */
+  }
+
+  /* Navigation button text improvements */
+  .risk-assessment-navigation button {
+    font-size: 0.6875rem !important; /* Smaller button text - 11px */
+    padding: 0.5rem 0.75rem !important; /* Compact padding */
+    line-height: 1.125rem !important;
+  }
+
+  /* === UNIVERSAL EMOJI FIXES === */
+
+  /* All emoji across components */
+  [data-section='main-content-area'] span:contains('😊'),
+  [data-section='main-content-area'] span:contains('🙂'),
+  [data-section='main-content-area'] span:contains('😐'),
+  [data-section='main-content-area'] span:contains('🙁'),
+  [data-section='main-content-area'] span:contains('😢'),
+  [data-section='main-content-area'] span:contains('📊'),
+  [data-section='main-content-area'] span:contains('🎯'),
+  [data-section='main-content-area'] span:contains('💰'),
+  [data-section='main-content-area'] span:contains('🎭'),
+  [data-section='main-content-area'] span:contains('🏠'),
+  [data-section='main-content-area'] span:contains('🎮') {
+    font-size: 0.875rem !important; /* Smaller emoji universally */
+  }
+
+  /* Sidebar emoji fixes for consistency */
+  .sidebar-element span.text-xl {
+    font-size: 1rem !important; /* Smaller sidebar emoji on mobile */
+  }
+
+  /* Button emoji in content areas */
+  button span:contains('💾'),
+  button span:contains('✅'),
+  button span:contains('⏳'),
+  button span:contains('🔄') {
+    font-size: 0.75rem !important; /* Smaller button emoji */
+  }
+
+  /* === ADDITIONAL MOBILE TEXT FIXES === */
+
+  /* Small tag/pill buttons */
+  .px-3.py-1.rounded-full {
+    font-size: 0.5rem !important; /* Very small pill text - 8px */
+    padding: 0.125rem 0.375rem !important; /* Minimal padding */
+  }
+
+  /* Range slider labels */
+  .flex.justify-between.text-xs {
+    font-size: 0.5rem !important; /* Very small range labels - 8px */
+  }
+
+  /* Grid layout improvements for mobile */
+  .grid.grid-cols-5 {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ) !important; /* 3 columns instead of 5 */
+    gap: 0.25rem !important; /* Smaller gap */
+  }
+
+  .grid.md\\:grid-cols-2 {
+    grid-template-columns: 1fr !important; /* Single column */
+    gap: 0.375rem !important; /* Smaller gap */
+  }
+
+  .grid.md\\:grid-cols-3 {
+    grid-template-columns: 1fr !important; /* Single column */
+    gap: 0.375rem !important; /* Smaller gap */
+  }
+}
+
+/* === COMPREHENSIVE MOBILE FIXES FOR REMAINING ELEMENTS === */
+
+/* Mobile fixes for lists, buttons, forms, and chat */
+@media (max-width: 425px) {
+  /* === LISTS AND TIPS FIXES === */
+  /* Tips kesehatan mental dan semua lists */
+  .mood-tracker-container ul li,
+  .mood-tracker-container ol li,
+  .risk-assessment-container ul li,
+  .risk-assessment-container ol li,
+  .max-w-4xl ul li,
+  .max-w-4xl ol li,
+  [data-section='main-content-area'] ul li,
+  [data-section='main-content-area'] ol li {
+    font-size: 0.75rem !important; /* Very small for mobile lists */
+    line-height: 1.1rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  /* List containers */
+  .mood-tracker-container ul,
+  .mood-tracker-container ol,
+  .risk-assessment-container ul,
+  .risk-assessment-container ol,
+  .max-w-4xl ul,
+  .max-w-4xl ol,
+  [data-section='main-content-area'] ul,
+  [data-section='main-content-area'] ol {
+    margin: 0.5rem 0 !important;
+    padding-left: 1rem !important;
+  }
+
+  /* === BUTTON FIXES === */
+  /* Tombol simpan mood dan semua tombol utama */
+  .mood-tracker-container button,
+  .risk-assessment-container button,
+  .max-w-4xl button,
+  [data-section='main-content-area'] button {
+    font-size: 0.75rem !important; /* Much smaller button text */
+    padding: 0.5rem 0.75rem !important; /* Compact padding */
+    line-height: 1.1rem !important;
+  }
+
+  /* Specific for primary action buttons */
+  .mood-tracker-container button[style*='var(--virpal-primary)'],
+  .risk-assessment-container button[style*='var(--virpal-primary)'],
+  .max-w-4xl button[style*='var(--virpal-primary)'] {
+    font-size: 0.75rem !important;
+    padding: 0.625rem 1rem !important;
+    font-weight: 600 !important;
+  }
+
+  /* === FORM CONTROLS FIXES === */
+  /* Input fields, select boxes, dan form elements */
+  .risk-assessment-container input[type='radio'] + div,
+  .risk-assessment-container label > div,
+  .risk-assessment-container .font-medium,
+  .mood-tracker-container input[type='radio'] + div,
+  .mood-tracker-container label > div,
+  .mood-tracker-container .font-medium {
+    font-size: 0.75rem !important; /* Smaller form labels */
+    line-height: 1.1rem !important;
+  }
+
+  /* Option descriptions in forms */
+  .risk-assessment-container .text-sm,
+  .mood-tracker-container .text-sm {
+    font-size: 0.6875rem !important; /* Even smaller descriptions */
+    line-height: 1rem !important;
+  }
+
+  /* Input fields and textareas */
+  .risk-assessment-container input,
+  .risk-assessment-container textarea,
+  .risk-assessment-container select,
+  .mood-tracker-container input,
+  .mood-tracker-container textarea,
+  .mood-tracker-container select {
+    font-size: 0.75rem !important;
+    padding: 0.5rem !important;
+  }
+
+  /* === CHAT BUBBLE AND AVATAR FIXES === */
+  /* Chat content typography */
+  [data-section='chat-bubble-area'] .chat-bubble-content,
+  [data-section='chat-bubble-area'] .markdown-chat,
+  [data-section='chat-bubble-area'] .markdown-content {
+    font-size: 0.75rem !important; /* Much smaller chat text */
+    line-height: 1.1rem !important;
+  }
+
+  /* Chat bubble headings */
+  [data-section='chat-bubble-area'] .markdown-chat h1,
+  [data-section='chat-bubble-area'] .markdown-chat h2,
+  [data-section='chat-bubble-area'] .markdown-chat h3 {
+    font-size: 0.8125rem !important; /* Slightly larger than body but still small */
+    line-height: 1.2rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  /* Chat bubble paragraphs and content */
+  [data-section='chat-bubble-area'] .markdown-chat p,
+  [data-section='chat-bubble-area'] .markdown-chat div,
+  [data-section='chat-bubble-area'] .markdown-chat span {
+    font-size: 0.75rem !important;
+    line-height: 1.1rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  /* Chat bubble lists */
+  [data-section='chat-bubble-area'] .markdown-chat ul,
+  [data-section='chat-bubble-area'] .markdown-chat ol {
+    font-size: 0.75rem !important;
+    margin: 0.25rem 0 !important;
+  }
+
+  [data-section='chat-bubble-area'] .markdown-chat li {
+    font-size: 0.6875rem !important; /* Very small list items in chat */
+    line-height: 1rem !important;
+    margin-bottom: 0.125rem !important;
+  }
+
+  /* === ULTRA COMPACT AVATAR FOR MOBILE === */
+  /* Make avatar even smaller on mobile to save more space */
+  .md\\:hidden .flex-shrink-0 .rounded-full,
+  [data-section='chat-bubble-area'] .md\\:hidden .flex-shrink-0 .rounded-full {
+    width: 1.5rem !important; /* 24px - very compact */
+    height: 1.5rem !important; /* 24px - very compact */
+    min-width: 1.5rem !important;
+    min-height: 1.5rem !important;
+    max-width: 1.5rem !important;
+    max-height: 1.5rem !important;
+    border-width: 1px !important;
+  }
+
+  /* Avatar container spacing */
+  .md\\:hidden .flex-shrink-0,
+  [data-section='chat-bubble-area'] .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.375rem !important; /* Minimal margin */
+  }
+
+  /* Chat message gap */
+  .flex.items-start.gap-3,
+  [data-section='chat-bubble-area'] .flex.items-start.gap-3 {
+    gap: 0.375rem !important; /* Minimal gap between avatar and message */
+  }
+
+  /* === SPACING AND LAYOUT FIXES === */
+  /* Reduce overall spacing in components */
+  .mood-tracker-container .space-y-6 > * + *,
+  .risk-assessment-container .space-y-6 > * + * {
+    margin-top: 1rem !important; /* Reduce large spacing */
+  }
+
+  .mood-tracker-container .space-y-4 > * + *,
+  .risk-assessment-container .space-y-4 > * + * {
+    margin-top: 0.75rem !important; /* Reduce medium spacing */
+  }
+
+  .mood-tracker-container .space-y-3 > * + *,
+  .risk-assessment-container .space-y-3 > * + * {
+    margin-top: 0.5rem !important; /* Reduce small spacing */
+  }
+
+  /* Container padding reduction */
+  .mood-tracker-container,
+  .risk-assessment-container,
+  .max-w-4xl {
+    padding: 0.75rem !important; /* Reduce container padding */
+  }
+
+  /* Card padding reduction */
+  .mood-tracker-container .rounded-lg.shadow-md,
+  .risk-assessment-container .rounded-lg.shadow-md,
+  .max-w-4xl .rounded-lg.shadow-md {
+    padding: 0.75rem !important; /* Reduce card padding */
+  }
+
+  /* === GRID LAYOUT OPTIMIZATIONS === */
+  /* Force single column layouts on mobile */
+  .mood-tracker-container .grid,
+  .risk-assessment-container .grid,
+  .max-w-4xl .grid {
+    grid-template-columns: 1fr !important; /* Force single column */
+    gap: 0.5rem !important; /* Reduce grid gaps */
+  }
+
+  /* Special handling for mood selection grid - keep 3 columns but smaller */
+  .mood-tracker-container .grid-cols-5 {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.375rem !important;
+  }
+}
+
+/* === EXTRA SMALL DEVICES (375px and below) === */
+@media (max-width: 375px) {
+  /* Even more aggressive sizing for very small screens */
+
+  /* Text sizes */
+  .mood-tracker-container,
+  .risk-assessment-container,
+  .max-w-4xl,
+  [data-section='main-content-area'] {
+    font-size: 0.6875rem !important; /* Base font even smaller */
+  }
+
+  /* Buttons */
+  .mood-tracker-container button,
+  .risk-assessment-container button,
+  .max-w-4xl button {
+    font-size: 0.6875rem !important;
+    padding: 0.375rem 0.5rem !important;
+  }
+
+  /* Chat content */
+  [data-section='chat-bubble-area'] .chat-bubble-content,
+  [data-section='chat-bubble-area'] .markdown-chat {
+    font-size: 0.6875rem !important;
+    line-height: 1rem !important;
+  }
+
+  /* Ultra compact avatar */
+  .md\\:hidden .flex-shrink-0 .rounded-full {
+    width: 1.25rem !important; /* 20px - ultra compact */
+    height: 1.25rem !important; /* 20px - ultra compact */
+    min-width: 1.25rem !important;
+    min-height: 1.25rem !important;
+    max-width: 1.25rem !important;
+    max-height: 1.25rem !important;
+    border-width: 1px !important;
+  }
+
+  /* Ultra compact spacing */
+  .md\\:hidden .flex-shrink-0 {
+    margin-right: 0.25rem !important;
+  }
+
+  .flex.items-start.gap-3 {
+    gap: 0.25rem !important;
+  }
+}
+
+/* === ENHANCED MOBILE FORM FIXES FOR RISK ASSESSMENT === */
+/* More specific targeting for Risk Assessment survey forms */
+@media (max-width: 425px) {
+  /* Risk Assessment form option labels */
+  .risk-assessment-container .space-y-3 label {
+    padding: 0.5rem !important; /* Reduce padding from p-3 to smaller */
+    font-size: 0.75rem !important; /* Make labels smaller */
+    line-height: 1rem !important;
+  }
+
+  /* Risk Assessment radio button options */
+  .risk-assessment-container .space-y-3 label input[type='radio'] {
+    width: 1rem !important; /* Make radio buttons smaller */
+    height: 1rem !important;
+    margin-top: 0.125rem !important; /* Adjust margin for alignment */
+  }
+
+  /* Risk Assessment option text containers */
+  .risk-assessment-container .space-y-3 label > div {
+    font-size: 0.75rem !important; /* Make option text smaller */
+    line-height: 1rem !important;
+  }
+
+  /* Main option text (font-medium) */
+  .risk-assessment-container .space-y-3 label .font-medium {
+    font-size: 0.8rem !important; /* Slightly larger for main option */
+    line-height: 1.125rem !important;
+    font-weight: 600 !important;
+  }
+
+  /* Description text (text-sm) */
+  .risk-assessment-container .space-y-3 label .text-sm {
+    font-size: 0.7rem !important; /* Very small for descriptions */
+    line-height: 0.9rem !important;
+    opacity: 0.9;
+  }
+
+  /* Reduce spacing between options */
+  .risk-assessment-container .space-y-3 > * + * {
+    margin-top: 0.5rem !important; /* Reduce gap between options */
+  }
+
+  /* Adjust gap between radio and text */
+  .risk-assessment-container .space-y-3 label.flex.items-start {
+    gap: 0.5rem !important; /* Reduce space-x-3 gap */
+  }
+
+  /* Number input fields in Risk Assessment */
+  .risk-assessment-container input[type='number'] {
+    font-size: 0.75rem !important;
+    padding: 0.375rem 0.5rem !important; /* Reduce input padding */
+    height: 2rem !important; /* Make inputs smaller */
+  }
+
+  /* Range inputs in Risk Assessment */
+  .risk-assessment-container input[type='range'] {
+    height: 1.25rem !important; /* Make range sliders smaller */
+  }
+
+  /* Labels for number and range inputs */
+  .risk-assessment-container label.block {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+    margin-bottom: 0.375rem !important;
+  }
+
+  /* Checkbox options in emotional triggers */
+  .risk-assessment-container .grid.md\\:grid-cols-2 label {
+    padding: 0.375rem !important; /* Smaller padding for checkboxes */
+    font-size: 0.75rem !important;
+  }
+
+  .risk-assessment-container
+    .grid.md\\:grid-cols-2
+    label
+    input[type='checkbox'] {
+    width: 0.875rem !important; /* Smaller checkboxes */
+    height: 0.875rem !important;
+  }
+
+  /* Range slider labels and values */
+  .risk-assessment-container .flex.justify-between.text-xs {
+    font-size: 0.65rem !important; /* Very small range labels */
+    margin-top: 0.25rem !important;
+  }
+
+  /* Step progress indicators - make smaller */
+  .risk-assessment-container .flex.justify-center.items-center.space-x-2 .w-8 {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  /* Preview results text */
+  .risk-assessment-container .p-4.rounded-lg.border h4 {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.375rem !important;
+  }
+
+  .risk-assessment-container .p-4.rounded-lg.border p {
+    font-size: 0.7rem !important;
+    line-height: 0.9rem !important;
+  }
+}
+
+/* Extra small screens - even more compact */
+@media (max-width: 375px) {
+  .risk-assessment-container .space-y-3 label {
+    padding: 0.375rem !important; /* Even smaller padding */
+    font-size: 0.7rem !important;
+  }
+
+  .risk-assessment-container .space-y-3 label .font-medium {
+    font-size: 0.75rem !important;
+  }
+
+  .risk-assessment-container .space-y-3 label .text-sm {
+    font-size: 0.65rem !important;
+    line-height: 0.8rem !important;
+  }
+
+  .risk-assessment-container input[type='radio'] {
+    width: 0.875rem !important;
+    height: 0.875rem !important;
+  }
+
+  .risk-assessment-container .space-y-3 > * + * {
+    margin-top: 0.375rem !important;
   }
 }

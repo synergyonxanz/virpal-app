@@ -284,9 +284,8 @@ const GamblingRiskAssessment: React.FC<GamblingRiskAssessmentProps> = ({
       if (score <= 18) return '#eef2ff'; // indigo-50
       return '#fef2f2'; // red-50
     };
-
     return (
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="max-w-4xl mx-auto p-6 space-y-6 risk-assessment-container">
         <div className="text-center">
           <h2
             className="text-2xl font-bold mb-2"
@@ -426,7 +425,7 @@ const GamblingRiskAssessment: React.FC<GamblingRiskAssessmentProps> = ({
   } // Using overflow-y-auto and h-full to make the component scrollable
   // This ensures that all assessment questions and results are visible via scrolling
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6 overflow-y-auto h-full">
+    <div className="max-w-4xl mx-auto p-6 space-y-6 overflow-y-auto h-full risk-assessment-container">
       {/* Header */}
       <div className="text-center">
         <h2
@@ -440,7 +439,7 @@ const GamblingRiskAssessment: React.FC<GamblingRiskAssessmentProps> = ({
           komprehensif ini
         </p>
         <div className="mt-4">
-          <div className="flex justify-center items-center space-x-2">
+          <div className="flex justify-center items-center space-x-2 risk-assessment-steps">
             {[1, 2, 3, 4, 5].map((step) => (
               <div
                 key={step}
@@ -523,7 +522,12 @@ const GamblingRiskAssessment: React.FC<GamblingRiskAssessmentProps> = ({
                     onChange={(e) =>
                       setAssessment((prev) => ({
                         ...prev,
-                        frequency: e.target.value as any,
+                        frequency: e.target.value as
+                          | 'never'
+                          | 'rarely'
+                          | 'sometimes'
+                          | 'often'
+                          | 'always',
                       }))
                     }
                     className="mt-1"
@@ -819,11 +823,11 @@ const GamblingRiskAssessment: React.FC<GamblingRiskAssessmentProps> = ({
           </div>
         )}{' '}
         {/* Navigation */}
-        <div className="flex justify-between mt-8">
+        <div className="flex flex-col sm:flex-row justify-between mt-8 gap-3 w-full risk-assessment-navigation">
           <button
             onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
             disabled={currentStep === 1}
-            className="px-6 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors theme-transition"
+            className="w-full sm:w-auto px-6 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors theme-transition"
             style={{
               backgroundColor:
                 currentStep === 1
@@ -854,7 +858,7 @@ const GamblingRiskAssessment: React.FC<GamblingRiskAssessmentProps> = ({
           <button
             onClick={handleStepComplete}
             disabled={isSubmitting}
-            className="px-6 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors theme-transition"
+            className="w-full sm:w-auto px-6 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors theme-transition"
             style={{
               backgroundColor: isSubmitting
                 ? 'var(--virpal-neutral-lighter)'

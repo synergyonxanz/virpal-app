@@ -25,6 +25,7 @@ import Calendar from './components/Calendar';
 import ChatBubble from './components/ChatBubble';
 import CloudSyncIndicator from './components/CloudSyncIndicator';
 import GamblingRiskAssessment from './components/GamblingRiskAssessment';
+import HackathonInfo from './components/HackathonInfo';
 import HistoryDetailMultiSession from './components/HistoryDetailMultiSession';
 import Modal from './components/Modal';
 import MoodTracker from './components/MoodTracker';
@@ -68,6 +69,7 @@ function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [showHackathonModal, setShowHackathonModal] = useState(false);
   const [chatCount, setChatCount] = useState(0);
   const [showUserModal, setShowUserModal] = useState(false);
   const [currentSession, setCurrentSession] = useState<ChatSession | null>(
@@ -489,12 +491,20 @@ function AppContent() {
     setShowSubscriptionModal(true);
   };
 
+  const handleShowHackathon = () => {
+    setShowHackathonModal(true);
+  };
+
   const handleCloseAbout = () => {
     setShowAboutModal(false);
   };
 
   const handleCloseSubscription = () => {
     setShowSubscriptionModal(false);
+  };
+
+  const handleCloseHackathon = () => {
+    setShowHackathonModal(false);
   };
 
   return (
@@ -527,12 +537,18 @@ function AppContent() {
           isHistoryOpen={showHistory}
           onShowAbout={handleShowAbout}
           onShowSubscription={handleShowSubscription}
+          onShowHackathon={handleShowHackathon}
         />
 
         {/* Overlay untuk sidebar (mobile) */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-40 z-40 md:hidden"
+            className="fixed inset-0 z-40 md:hidden"
+            style={{
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            }}
             onClick={toggleSidebar}
           />
         )}
@@ -540,7 +556,12 @@ function AppContent() {
         {/* Overlay untuk history (mobile) */}
         {showHistory && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-40 z-40 md:hidden"
+            className="fixed inset-0 z-40 md:hidden"
+            style={{
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            }}
             onClick={toggleHistory}
           />
         )}
@@ -620,96 +641,97 @@ function AppContent() {
         >
           {/* === HEADER START === */}
           <header
-            className="flex items-center justify-between px-6 py-3 sticky top-1 z-30 rounded-t-md flex-shrink-0 theme-transition"
+            className="flex flex-col sm:flex-row items-center sm:items-center sm:justify-between px-4 sm:px-6 py-2 sm:py-3 sticky top-1 z-30 rounded-t-md flex-shrink-0 theme-transition gap-3 sm:gap-0"
             data-section="header"
             style={{ backgroundColor: 'var(--virpal-header-bg)' }}
           >
-            <div className="flex items-center gap-3 relative min-h-[40px]">
-              {/* === SIDEBAR OPEN BUTTON (IN HEADER) START === */}
-              {!sidebarOpen && (
-                <button
-                  onClick={toggleSidebar}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg text-white text-xl transition-all duration-300 ease-in absolute left-0"
-                  style={{
-                    backgroundColor: 'var(--virpal-secondary)',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      'var(--virpal-secondary-hover)';
-                    e.currentTarget.style.cursor = 'pointer';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      'var(--virpal-secondary)';
-                  }}
-                  onMouseDown={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      'var(--virpal-secondary-active)';
-                  }}
-                  onMouseUp={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      'var(--virpal-secondary-hover)';
-                  }}
-                  title="Buka Sidebar"
-                  data-section="sidebar-open-btn"
-                >
-                  <span>→</span>
-                </button>
-              )}
-              {/* === SIDEBAR OPEN BUTTON (IN HEADER) END === */}
-              <div
-                className={`flex flex-col transition-all duration-300 ease-in ${
-                  sidebarOpen ? 'ml-0' : 'ml-[52px]'
-                }`}
-              >
-                <span className="font-bold text-lg md:text-xl text-[var(--virpal-primary)] leading-tight">
-                  VirPal - AI Mental Health Assistant
-                </span>
-                {/* Tagline dengan ukuran yang lebih kecil */}
-                <span
-                  className="text-xs md:text-sm transition-all duration-300 ease-in"
-                  style={{ color: 'var(--virpal-neutral-dark)' }}
-                >
-                  Judi Online Prevention &amp; Mental Wellness
-                </span>
+            {/* Title Section - Shows first on mobile (≤512px), inline on desktop */}
+            <div className="w-full sm:w-auto order-1 sm:order-none flex justify-center sm:justify-start">
+              <div className="flex items-center gap-3 sm:gap-3 relative min-h-[40px]">
+                {/* === SIDEBAR OPEN BUTTON (IN HEADER) START === */}
+                {!sidebarOpen && (
+                  <button
+                    onClick={toggleSidebar}
+                    className="w-8 sm:w-10 h-8 sm:h-10 rounded-lg flex items-center justify-center shadow-lg text-white text-lg sm:text-xl transition-all duration-300 ease-in"
+                    style={{
+                      backgroundColor: 'var(--virpal-secondary)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        'var(--virpal-secondary-hover)';
+                      e.currentTarget.style.cursor = 'pointer';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        'var(--virpal-secondary)';
+                    }}
+                    onMouseDown={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        'var(--virpal-secondary-active)';
+                    }}
+                    onMouseUp={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        'var(--virpal-secondary-hover)';
+                    }}
+                    title="Buka Sidebar"
+                    data-section="sidebar-open-btn"
+                  >
+                    <span>→</span>
+                  </button>
+                )}
+                {/* === SIDEBAR OPEN BUTTON (IN HEADER) END === */}
+                <div className="flex flex-col transition-all duration-300 ease-in">
+                  <span className="font-bold text-sm sm:text-lg md:text-xl text-[var(--virpal-primary)] leading-tight">
+                    VirPal - AI Mental Health Assistant
+                  </span>
+                  {/* Tagline dengan ukuran yang lebih kecil */}
+                  <span
+                    className="text-xs sm:text-sm transition-all duration-300 ease-in"
+                    style={{ color: 'var(--virpal-neutral-dark)' }}
+                  >
+                    Judi Online Prevention &amp; Mental Wellness
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* TTS Controls and Authentication */}
-            <div className="flex items-center gap-3">
-              {/* TTS Controls - always show but restrict for guests */}
-              <TTSControls
-                isInitialized={tts.isInitialized}
-                isEnabled={tts.isEnabled}
-                isSpeaking={tts.isSpeaking}
-                initializationError={tts.initializationError}
-                onToggleTTS={tts.toggleTTS}
-                onStopSpeaking={tts.stopSpeaking}
-                onInitialize={handleTTSInitialize}
-                isAuthenticated={isAuthenticated}
-                onLoginClick={handleLogin}
-              />
+            {/* Controls Section - Shows second on mobile (≤512px), inline on desktop */}
+            <div className="w-full sm:w-auto order-2 sm:order-none flex justify-center sm:justify-end">
+              <div className="flex items-center gap-2 sm:gap-2 md:gap-3">
+                {/* TTS Controls - always show but restrict for guests */}
+                <TTSControls
+                  isInitialized={tts.isInitialized}
+                  isEnabled={tts.isEnabled}
+                  isSpeaking={tts.isSpeaking}
+                  initializationError={tts.initializationError}
+                  onToggleTTS={tts.toggleTTS}
+                  onStopSpeaking={tts.stopSpeaking}
+                  onInitialize={handleTTSInitialize}
+                  isAuthenticated={isAuthenticated}
+                  onLoginClick={handleLogin}
+                />
 
-              {/* Cloud Sync Status Indicator */}
-              <CloudSyncIndicator
-                status={cloudSyncStatus}
-                isAuthenticated={isAuthenticated}
-              />
+                {/* Cloud Sync Status Indicator */}
+                <CloudSyncIndicator
+                  status={cloudSyncStatus}
+                  isAuthenticated={isAuthenticated}
+                />
 
-              {/* Authentication Button */}
-              <AuthButton
-                isAuthenticated={isAuthenticated}
-                user={user}
-                error={authError}
-                isInitialized={isInitialized}
-                onLogin={handleLogin}
-                onLogout={handleLogout}
-                onClearError={clearError}
-                showProfile={true}
-                onShowUserDetails={() => setShowUserModal(true)}
-              />
+                {/* Authentication Button */}
+                <AuthButton
+                  isAuthenticated={isAuthenticated}
+                  user={user}
+                  error={authError}
+                  isInitialized={isInitialized}
+                  onLogin={handleLogin}
+                  onLogout={handleLogout}
+                  onClearError={clearError}
+                  showProfile={true}
+                  onShowUserDetails={() => setShowUserModal(true)}
+                />
+              </div>
             </div>
           </header>
           {/* === HEADER END === */}
@@ -829,6 +851,15 @@ function AppContent() {
           title="Tentang Kami"
         >
           <AboutUs />
+        </Modal>
+
+        {/* Hackathon Info Modal */}
+        <Modal
+          isOpen={showHackathonModal}
+          onClose={handleCloseHackathon}
+          title="Info Hackathon - elevAIte 2025"
+        >
+          <HackathonInfo />
         </Modal>
 
         {/* Subscription Modal */}

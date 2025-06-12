@@ -91,23 +91,24 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
             >
               {children}
             </em>
-          ),
-
-          // Custom styling untuk lists
+          ), // Custom styling untuk lists - Fixed formatting for proper inline display
           ul: ({ children }) => (
-            <ul className="list-disc list-inside my-2 space-y-1 theme-transition">
+            <ul className="list-disc list-outside my-2 space-y-1 ml-5 theme-transition">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside my-2 space-y-1 theme-transition">
+            <ol className="list-decimal list-outside my-2 space-y-1 ml-5 theme-transition">
               {children}
             </ol>
           ),
           li: ({ children }) => (
             <li
               className="text-sm leading-relaxed theme-transition"
-              style={{ color: 'var(--virpal-neutral-default)' }}
+              style={{
+                color: 'var(--virpal-neutral-default)',
+                display: 'list-item',
+              }}
             >
               {children}
             </li>
@@ -126,7 +127,8 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
               {children}
             </blockquote>
           ), // Custom styling untuk code
-          code: ({ node, inline, children, ...props }: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          code: ({ inline, children, ...props }: any) => {
             if (inline) {
               return (
                 <code

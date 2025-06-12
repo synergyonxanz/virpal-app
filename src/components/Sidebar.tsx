@@ -27,6 +27,7 @@ interface SidebarProps {
   isHistoryOpen: boolean;
   onShowAbout: () => void;
   onShowSubscription: () => void;
+  onShowHackathon: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -37,6 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   isHistoryOpen,
   onShowAbout,
   onShowSubscription,
+  onShowHackathon,
 }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSettingsClosing, setIsSettingsClosing] = useState(false);
@@ -311,11 +313,47 @@ const Sidebar: React.FC<SidebarProps> = ({
           >
             {' '}
             📅
-          </span>
+          </span>{' '}
           Buka History{' '}
         </button>
+        <button
+          onClick={onShowSubscription}
+          className="w-full flex items-center gap-3 rounded-lg p-3 font-semibold text-base transition-colors theme-transition"
+          style={{
+            backgroundColor: 'var(--virpal-sidebar-bg)',
+            color: 'var(--virpal-sidebar-text)',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-sidebar-hover)';
+            e.currentTarget.style.cursor = 'pointer';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--virpal-sidebar-bg)';
+          }}
+          onMouseDown={(e) => {
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-sidebar-hover)';
+          }}
+          onMouseUp={(e) => {
+            e.currentTarget.style.backgroundColor =
+              'var(--virpal-sidebar-hover)';
+          }}
+        >
+          <span
+            className="w-8 h-8 rounded flex items-center justify-center text-xl theme-transition"
+            style={{
+              backgroundColor: 'var(--virpal-neutral-lighter)',
+              color: 'var(--virpal-sidebar-text)',
+            }}
+          >
+            ⭐
+          </span>
+          Langganan
+        </button>
         {/* Fitur Mental Health */}
-        <div className="mt-4 mb-2">
+        <div className="mt-2 mb-0 p-0">
           <h3
             className="text-sm font-semibold px-3 py-1 theme-transition"
             style={{ color: 'var(--virpal-primary)' }}
@@ -413,44 +451,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             }}
           >
             🎯
-          </span>
+          </span>{' '}
           Risk Assessment
-        </button>
-        <button
-          onClick={onShowSubscription}
-          className="w-full flex items-center gap-3 rounded-lg p-3 font-semibold text-base transition-colors theme-transition"
-          style={{
-            backgroundColor: 'var(--virpal-sidebar-bg)',
-            color: 'var(--virpal-sidebar-text)',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor =
-              'var(--virpal-sidebar-hover)';
-            e.currentTarget.style.cursor = 'pointer';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--virpal-sidebar-bg)';
-          }}
-          onMouseDown={(e) => {
-            e.currentTarget.style.backgroundColor =
-              'var(--virpal-sidebar-hover)';
-          }}
-          onMouseUp={(e) => {
-            e.currentTarget.style.backgroundColor =
-              'var(--virpal-sidebar-hover)';
-          }}
-        >
-          <span
-            className="w-8 h-8 rounded flex items-center justify-center text-xl theme-transition"
-            style={{
-              backgroundColor: 'var(--virpal-neutral-lighter)',
-              color: 'var(--virpal-sidebar-text)',
-            }}
-          >
-            ⭐
-          </span>
-          Langganan
         </button>
       </div>{' '}
       {/* Settings Button - hanya tampil saat sidebar terbuka */}
@@ -560,7 +562,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </div>
                   </div>
                 )}
-              </div>
+              </div>{' '}
               {/* Tentang Kami */}
               <div
                 className="text-xs font-medium px-2 py-2 rounded cursor-pointer transition-all duration-200 flex items-center justify-between theme-transition"
@@ -588,6 +590,34 @@ const Sidebar: React.FC<SidebarProps> = ({
               >
                 <span>Tentang Kami</span>
                 <span>ℹ️</span>
+              </div>
+              {/* Info Hackathon */}
+              <div
+                className="text-xs font-medium px-2 py-2 rounded cursor-pointer transition-all duration-200 flex items-center justify-between theme-transition"
+                style={{ color: 'var(--virpal-sidebar-text)' }}
+                onClick={() => {
+                  handleCloseSettings();
+                  onShowHackathon();
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    'var(--virpal-sidebar-hover)';
+                  e.currentTarget.style.cursor = 'pointer';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    'var(--virpal-accent-active)';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    'var(--virpal-sidebar-hover)';
+                }}
+              >
+                <span>Info Hackathon</span>
+                <span>🏆</span>
               </div>
             </div>
           </div>

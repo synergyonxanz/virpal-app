@@ -129,9 +129,9 @@ const MoodTracker: React.FC<MoodTrackerProps> = ({ onMoodUpdate }) => {
     'Masak',
     'Belajar Baru',
   ];
-
   useEffect(() => {
     loadMoodHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
   const loadMoodHistory = async () => {
@@ -234,22 +234,35 @@ const MoodTracker: React.FC<MoodTrackerProps> = ({ onMoodUpdate }) => {
     }));
   };
   const trend = getMoodTrend();
-  const trendColors = {
-    improving: 'var(--virpal-success)',
-    stable: 'var(--virpal-warning)',
-    concerning: 'var(--virpal-danger)',
-    insufficient_data: 'var(--virpal-neutral-dark)',
+
+  const getTrendColor = (trendType: string): string => {
+    switch (trendType) {
+      case 'improving':
+        return 'var(--virpal-success)';
+      case 'stable':
+        return 'var(--virpal-warning)';
+      case 'concerning':
+        return 'var(--virpal-danger)';
+      default:
+        return 'var(--virpal-neutral-dark)';
+    }
   };
 
-  const trendBgColors = {
-    improving: '#f0fdf4', // green-50
-    stable: '#fffbeb', // yellow-50
-    concerning: '#fef2f2', // red-50
-    insufficient_data: '#f8fafc', // gray-50
+  const getTrendBgColor = (trendType: string): string => {
+    switch (trendType) {
+      case 'improving':
+        return '#f0fdf4'; // green-50
+      case 'stable':
+        return '#fffbeb'; // yellow-50
+      case 'concerning':
+        return '#fef2f2'; // red-50
+      default:
+        return '#f8fafc'; // gray-50
+    }
   }; // Using overflow-y-auto and h-full to make the component scrollable
   // This ensures that content doesn't get cut off when it exceeds viewport
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6 overflow-y-auto h-full">
+    <div className="max-w-4xl mx-auto p-6 space-y-6 overflow-y-auto h-full mood-tracker-container">
       {/* Header */}
       <div className="text-center">
         <h2
@@ -268,9 +281,9 @@ const MoodTracker: React.FC<MoodTrackerProps> = ({ onMoodUpdate }) => {
         <div
           className="p-4 rounded-lg border theme-transition"
           style={{
-            backgroundColor: trendBgColors[trend],
-            borderColor: trendColors[trend],
-            color: trendColors[trend],
+            backgroundColor: getTrendBgColor(trend),
+            borderColor: getTrendColor(trend),
+            color: getTrendColor(trend),
           }}
         >
           <h3 className="font-semibold mb-2">📈 Tren Mood 7 Hari Terakhir</h3>
@@ -313,7 +326,12 @@ const MoodTracker: React.FC<MoodTrackerProps> = ({ onMoodUpdate }) => {
                 onClick={() =>
                   setCurrentMood((prev) => ({
                     ...prev,
-                    mood: option.value as any,
+                    mood: option.value as
+                      | 'very_happy'
+                      | 'happy'
+                      | 'neutral'
+                      | 'sad'
+                      | 'very_sad',
                   }))
                 }
                 className="p-3 rounded-lg border-2 transition-all theme-transition"
